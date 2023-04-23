@@ -15,7 +15,6 @@ public class SinglyLinkedList {
         while (p != null && p.data != value) {
             p = p.next;
         }
-
         return p;
     }
 
@@ -125,8 +124,9 @@ public class SinglyLinkedList {
 
     public void deleteByValue(int value) {
         if (head == null) return;
-
+        //p为要删除的节点
         Node p = head;
+        //q为要删除节点的前驱节点
         Node q = null;
         while (p != null && p.data != value) {
             q = p;
@@ -222,7 +222,7 @@ public class SinglyLinkedList {
            if(q.next == null){
                //　p 一定为整个链表的中点，且节点数目为奇数
                rightLink = p.next;
-               leftLink = inverseLinkList(p).next;
+               leftLink = inverseLinkList_head(p).next;
                System.out.println("左边第一个节点"+leftLink.data);
                System.out.println("右边第一个节点"+rightLink.data);
 

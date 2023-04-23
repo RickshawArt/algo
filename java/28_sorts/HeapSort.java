@@ -22,7 +22,7 @@ public class HeapSort {
         int k = arr.length - 1;
         while (k > 0) {
             // 将堆顶元素（最大）与最后一个元素交换位置
-            swap(arr, 0, k);
+//            swap(arr, 0, k);
             // 将剩下元素重新堆化，堆顶元素变成最大元素
             heapify(arr, --k, 0);
         }
@@ -65,7 +65,7 @@ public class HeapSort {
                 break;
             }
             // 与子节点交换位置
-            swap(arr, i, maxPos);
+//            swap(arr, i, maxPos);
             // 以交换后子节点位置接着往下查找
             i = maxPos;
         }
