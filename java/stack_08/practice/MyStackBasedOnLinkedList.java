@@ -37,6 +37,10 @@ public class MyStackBasedOnLinkedList<E> {
         return new Node<>(e, null);
     }
 
+    public void clear() {
+        this.sentinel.next = null;
+    }
+
     /**
      * 入栈
      * @param item  入栈元素
