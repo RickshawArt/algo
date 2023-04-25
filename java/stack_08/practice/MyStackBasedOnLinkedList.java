@@ -41,6 +41,20 @@ public class MyStackBasedOnLinkedList<E> {
         this.sentinel.next = null;
     }
 
+    public boolean isEmpty() {
+        return this.sentinel.next == null;
+    }
+
+    public int size() {
+        int size = 0;
+        Node<E> iterator = this.sentinel.next;
+        while (iterator != null) {
+            size++;
+            iterator = iterator.next;
+        }
+        return size;
+    }
+
     /**
      * 入栈
      * @param item  入栈元素
