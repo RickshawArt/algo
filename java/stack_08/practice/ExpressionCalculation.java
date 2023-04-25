@@ -51,28 +51,50 @@ public class ExpressionCalculation {
     private int parseAndCalculate(String expression) {
         //表达式字符数组
         String[] charArr = expression.split("");
-        StringBuilder numBuf = new  StringBuilder();
-        for (String c : charArr) {
-            boolean isNum = this.isNumber(c);
-            if (isNum) {
+        StringBuilder numBuf = new StringBuilder();
+        for (int i = 0; i < charArr.length; i++) {
+            String c = charArr[i];
+            //把操作数入栈
+            if (this.isNumber(c) && i == charArr.length - 1) {
+                this.operandStack.push(c);
+                numBuf.setLength(0);
+                break;
+            }
+            if (this.isNumber(c)) {
                 numBuf.append(c);
                 continue;
             }
             this.operandStack.push(numBuf.toString());
             numBuf.setLength(0);
-            //是否需要优先计算
-            boolean priorCalculate = needPriorCalculate(c);
-            if (priorCalculate) {
-                int result = calculate();
-                if (result == Integer.MIN_VALUE) {
-                    continue;
-                }
-                this.operandStack.push(result + "");
-            } else {
-                this.operatorStack.push(c);
-            }
+            compareOperatorCal(c);
+            this.operatorStack.push(c);
         }
-        return Integer.parseInt(this.operandStack.peek());
+        //把表达式的内容录入进操作数栈跟运算符栈，根据运算符栈的数量再进行计算输出
+        int size = this.operatorStack.size();
+        for (int i = 0; i < size; i++) {
+            int result = this.calculate();
+            this.operandStack.push(String.valueOf(result));
+        }
+        return Integer.parseInt(this.operandStack.pop());
+    }
+
+    /**
+     * 递归比较当前运算符和栈顶运算符，直到比栈顶运算符优先级高跳出递归
+     * @param operator  当前运算符
+     * @author Rickshaw
+     * @since 2023/4/25 20:03
+     */
+    private void compareOperatorCal(String operator) {
+        //是否需要优先计算
+        boolean priorCalculate = needPriorCalculate(operator);
+        if (priorCalculate) {
+            int result = this.calculate();
+            if (result == Integer.MIN_VALUE) {
+                return;
+            }
+            this.operandStack.push(String.valueOf(result));
+            compareOperatorCal(operator);
+        }
     }
 
     /**
@@ -82,7 +104,7 @@ public class ExpressionCalculation {
      * @since 2023/4/25 15:14
      */
     private int calculate() {
-        if (this.operatorStack.size() == 1) {
+        if (this.operandStack.size() <2) {
             return Integer.MIN_VALUE;
         }
         int right = Integer.parseInt(this.operandStack.pop());
@@ -90,13 +112,13 @@ public class ExpressionCalculation {
         String operator = this.operatorStack.pop();
         int result = 0;
         //由于做不到运算符字符串，真正的算数运算符一一映射，所以目前先写死加减乘除规则，Just play
-        if (operator.equals("+")) {
+        if ("+".equals(operator)) {
             result = left + right;
-        } else if (operator.equals("-")) {
+        } else if ("-".equals(operator)) {
             result = left - right;
-        } else if (operator.equals("*")) {
+        } else if ("*".equals(operator)) {
             result = left * right;
-        } else if (operator.equals("/")) {
+        } else if ("/".equals(operator)) {
             result = left / right;
         }
         return result;
@@ -115,7 +137,6 @@ public class ExpressionCalculation {
         if (Objects.isNull(operatorPriority)) {
             throw new IllegalArgumentException("没有找到[" + operator + "]的运算符优先级, 请先确保它已经在priority中");
         }
-//        this.operatorStack.push(operator);
         //栈顶为空, 直接push
         if (this.operatorStack.isEmpty()) {
             return false;
@@ -139,14 +160,15 @@ public class ExpressionCalculation {
 
     public static void main(String[] args) {
         String expression = "3+5*8-6";
-//        expression = "34+13*9+44-12/3";
+        expression = "34+13*9+44-12/3";
+        expression = "8*9-13+10/2";
         Map<String, Integer> priority = new HashMap<>();
         priority.putIfAbsent("+", 1);
         priority.putIfAbsent("-", 1);
         priority.putIfAbsent("*", 2);
         priority.putIfAbsent("/", 2);
         ExpressionCalculation expressionCalculation = new ExpressionCalculation(priority);
-        System.out.println("expressionCalculation.parseAndCalculate(expression) = " + expressionCalculation.parseAndCalculate(expression));
+        System.out.println(expression + " = " + expressionCalculation.parseAndCalculate(expression));
     }
 
 
