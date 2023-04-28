@@ -46,16 +46,70 @@ public class MyQueueBasedOnLinkedList<E> {
      */
     public void enqueue(E e) {
         Node<E> newNode = this.createNode(e);
-        //如果是首元素，队头指针要指向将要出队的元素
+        //如果是首元素，队头，队尾指针要指向首元素
         if (this.head == null) {
             this.head = newNode;
+            this.tail = newNode;
+            return;
         }
-        //队尾指针指向新元素将要入队的位置
-        newNode.next = tail;
-        tail = newNode;
+        //队尾指针指向newNode的位置
+        this.tail.next = newNode;
+        this.tail = this.tail.next;
     }
 
+    /**
+     * 出队
+     * @return E
+     * @author Rickshaw
+     * @since 2023/4/28 8:50
+     */
+    public E dequeue() {
+        //队列为空
+        if (this.head == null) {
+            return null;
+        }
+        E ret = this.head.item;
+        this.head = this.head.next;
+        //如果出队的是最后一个元素，要把队尾设null，不然再入队会形成环，造成死循环
+        if (this.head == null) {
+            this.tail = null;
+        }
+        return ret;
+    }
 
+    /**
+     * 从队头打印链表
+     * @author Rickshaw
+     * @since 2023/4/28 9:03
+     */
+    public void printAll() {
+        System.out.print("printAll: ");
+        Node<E> iterator = this.head;
+        while (iterator != null) {
+            System.out.print(iterator.item + " ");
+            iterator = iterator.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        MyQueueBasedOnLinkedList<Integer> queue = new MyQueueBasedOnLinkedList<>();
+        queue.enqueue(1);
+        queue.enqueue(2);
+        queue.printAll();
+        queue.enqueue(3);
+        queue.enqueue(4);
+        queue.enqueue(5);
+        queue.dequeue();
+        queue.dequeue();
+        queue.enqueue(6);
+        queue.dequeue();
+        queue.dequeue();
+        queue.dequeue();
+        queue.dequeue();
+        queue.enqueue(7);
+        queue.printAll();
+    }
 
 
 
