@@ -1,7 +1,7 @@
 package Stack.java.sorts_11.practice;
 
 /**
- * 冒泡排序，插入排序，选择排序
+ * 冒泡排序，插入排序，选择排序，希尔排序
  *
  * @author Rickshaw
  * @version 1.0
@@ -21,7 +21,7 @@ public class MySorts {
         }
         //用于交换变量
         int exchange = 0;
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < length - 1; i++) {
             //如果下一次没有进行比较交换逻辑，则证明已排序好
             boolean isSorted = true;
             for (int j = 0; j < length - i - 1; j++) {
@@ -34,6 +34,30 @@ public class MySorts {
             }
             if (isSorted) {
                 return;
+            }
+        }
+    }
+
+    /**
+     * 向下冒泡排序
+     * @param arr   要排序的数组
+     * @author Rickshaw
+     * @since 2023/5/9 10:47
+     */
+    public static void bubbleDownSort(int[] arr) {
+        int length = arr.length;
+        if (length <= 1) {
+            return;
+        }
+        //用于交换变量
+        int exchange = 0;
+        for (int i = 0; i < length - 1; i++) {
+            for (int j = i + 1; j < length; j++) {
+                if (arr[i] > arr[j]) {
+                    exchange = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = exchange;
+                }
             }
         }
     }
@@ -74,6 +98,9 @@ public class MySorts {
      */
     public static void selectionSort(int[] arr) {
         int length = arr.length;
+        if (length <= 1) {
+            return;
+        }
         //未排序区遍历找到的最小值
         int minIndex;
         //用于交换数据的变量
@@ -97,6 +124,35 @@ public class MySorts {
     }
 
     /**
+     * 希尔排序
+     * @param arr   待排序数组
+     * @author Rickshaw
+     * @since 2023/5/9 8:53
+     */
+    public static void shellSort(int[] arr) {
+        int length = arr.length;
+        if (length <= 1) {
+            return;
+        }
+        //初始步长为数组长度的一半，而且每次为原来的一半；直到step == 1，直接对整一个数组进行插入排序
+        for (int step = length / 2; step > 0; step /= 2) {
+            //从第step元素，对其所在组的元素进行插入排序
+            for (int i = step; i < length; i++) {
+                int j = i;
+                //待排序元素
+                int value = arr[j];
+                //如果比组内前一个元素小，则进行交换
+                while (j - step >= 0 && value < arr[j - step]) {
+                    //组内插入排序
+                    arr[j] = arr[j - step];
+                    j -= step;
+                }
+                arr[j] = value;
+            }
+        }
+    }
+
+    /**
      * 打印数组
      * @param arr   要打印的数组
      * @author Rickshaw
@@ -113,8 +169,10 @@ public class MySorts {
     public static void main(String[] args) {
         int[] arr = {1, 5, 4, 7, 2, 6};
 //        bubbleSort(arr);
+        bubbleDownSort(arr);
 //        insertionSort(arr);
-        selectionSort(arr);
+//        selectionSort(arr);
+//        shellSort(arr);
         printArr(arr);
     }
 
