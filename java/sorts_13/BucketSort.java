@@ -29,7 +29,6 @@ public class BucketSort {
                 maxValue = arr[i];
             }
         }
-
         // 桶数量
         int bucketCount = (maxValue - minValue) / bucketSize + 1;
         int[][] buckets = new int[bucketCount][bucketSize];

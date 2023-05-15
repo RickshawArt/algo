@@ -1,5 +1,7 @@
 package Stack.java.sorts_12.practice;
 
+import Stack.java.service.SortAlgo;
+
 /**
  * 归并排序
  *
@@ -7,14 +9,8 @@ package Stack.java.sorts_12.practice;
  * @version 1.0
  * @since 2023/5/10 9:09
  */
-public class MyMergeSort {
-
-    /**
-     * 归并排序
-     * @param arr   待排序的数组
-     * @author Rickshaw
-     * @since 2023/5/10 9:16
-     */
+public class MyMergeSort implements SortAlgo {
+    @Override
     public void sort(int[] arr) {
         int length = arr.length;
         if (length <= 1) {
@@ -122,22 +118,8 @@ public class MyMergeSort {
 
     }
 
-    /**
-     * 打印数组
-     * @param arr   要打印的数组
-     * @author Rickshaw
-     * @since 2023/5/10 10:58
-     */
-    public void printArr(int[] arr) {
-        System.out.print("printArr: ");
-        for (int j : arr) {
-            System.out.print(j + " ");
-        }
-        System.out.println();
-    }
-
     public static void main(String[] args) {
-        MyMergeSort myMergeSort = new MyMergeSort();
+        SortAlgo myMergeSort = new MyMergeSort();
         int[] arr = {1, 5, 4, 7, 2, 6};
         myMergeSort.sort(arr);
         myMergeSort.printArr(arr);

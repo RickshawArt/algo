@@ -1,5 +1,7 @@
 package Stack.java.sorts_12.practice;
 
+import Stack.java.service.SortAlgo;
+
 /**
  * 快速排序
  *
@@ -7,14 +9,9 @@ package Stack.java.sorts_12.practice;
  * @version 1.0
  * @since 2023/5/12 8:45
  */
-public class MyQuickSort {
+public class MyQuickSort implements SortAlgo {
 
-    /**
-     * 快速排序入口
-     * @param arr   待排序数组
-     * @author Rickshaw
-     * @since 2023/5/12 8:46
-     */
+    @Override
     public void sort(int[] arr) {
         if (arr.length <= 1) {
             return;
@@ -78,25 +75,10 @@ public class MyQuickSort {
         arr[i] = temp;
     }
 
-    /**
-     * 打印数组
-     * @param arr   要打印的数组
-     * @author Rickshaw
-     * @since 2023/5/10 10:58
-     */
-    public void printArr(int[] arr) {
-        System.out.print("printArr: ");
-        for (int j : arr) {
-            System.out.print(j + " ");
-        }
-        System.out.println();
-    }
-
     public static void main(String[] args) {
-        MyQuickSort myQuickSort = new MyQuickSort();
+        SortAlgo myQuickSort = new MyQuickSort();
         int[] arr = {8, 10, 2, 3, 6, 1, 5};
         myQuickSort.sort(arr);
         myQuickSort.printArr(arr);
     }
-
 }
