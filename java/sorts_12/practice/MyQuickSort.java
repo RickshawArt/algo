@@ -13,10 +13,15 @@ public class MyQuickSort implements SortAlgo {
 
     @Override
     public void sort(int[] arr) {
-        if (arr.length <= 1) {
+        this.sort(arr, arr.length);
+    }
+
+    @Override
+    public void sort(int[] arr, int length) {
+        if (length <= 1) {
             return;
         }
-        quickSortRecursion(arr, 0, arr.length - 1);
+        quickSortRecursion(arr, 0, length - 1);
     }
 
     /**

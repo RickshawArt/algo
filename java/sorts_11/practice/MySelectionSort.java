@@ -11,8 +11,7 @@ import Stack.java.service.SortAlgo;
  */
 public class MySelectionSort implements SortAlgo {
     @Override
-    public void sort(int[] arr) {
-        int length = arr.length;
+    public void sort(int[] arr, int length) {
         if (length <= 1) {
             return;
         }
@@ -36,6 +35,11 @@ public class MySelectionSort implements SortAlgo {
                 arr[minIndex] = exchange;
             }
         }
+    }
+
+    @Override
+    public void sort(int[] arr) {
+        this.sort(arr, arr.length);
     }
 
     public static void main(String[] args) {

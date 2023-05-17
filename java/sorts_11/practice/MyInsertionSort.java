@@ -10,9 +10,9 @@ import Stack.java.service.SortAlgo;
  * @since 2023/5/15 15:11
  */
 public class MyInsertionSort implements SortAlgo {
+
     @Override
-    public void sort(int[] arr) {
-        int length = arr.length;
+    public void sort(int[] arr, int length) {
         if (length <= 1) {
             return;
         }
@@ -31,6 +31,11 @@ public class MyInsertionSort implements SortAlgo {
             //因为判断j >= 0的时候j--了，所以要补1
             arr[j + 1] = value;
         }
+    }
+
+    @Override
+    public void sort(int[] arr) {
+        this.sort(arr, arr.length);
     }
 
     public static void main(String[] args) {

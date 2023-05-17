@@ -12,7 +12,11 @@ import Stack.java.service.SortAlgo;
 public class MyBubbleSort implements SortAlgo {
     @Override
     public void sort(int[] arr) {
-        int length = arr.length;
+        this.sort(arr, arr.length);
+    }
+
+    @Override
+    public void sort(int[] arr, int length) {
         if (length <= 1) {
             return;
         }

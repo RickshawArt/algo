@@ -18,6 +18,15 @@ public interface SortAlgo {
     void sort(int[] arr);
 
     /**
+     * 升序排序
+     * @param arr   带排序数组
+     * @param length    需要排序的数据长度
+     * @author Rickshaw
+     * @since 2023/5/17 16:40
+     */
+    void sort(int[] arr, int length);
+
+    /**
      * 打印数组
      * @param arr   待打印的数组
      * @author Rickshaw

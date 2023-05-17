@@ -10,9 +10,9 @@ import Stack.java.service.SortAlgo;
  * @since 2023/5/15 15:16
  */
 public class MyShellSort implements SortAlgo {
+
     @Override
-    public void sort(int[] arr) {
-        int length = arr.length;
+    public void sort(int[] arr, int length) {
         if (length <= 1) {
             return;
         }
@@ -32,6 +32,11 @@ public class MyShellSort implements SortAlgo {
                 arr[j] = value;
             }
         }
+    }
+
+    @Override
+    public void sort(int[] arr) {
+        this.sort(arr, arr.length);
     }
 
     public static void main(String[] args) {
