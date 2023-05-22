@@ -35,12 +35,14 @@ public class MyBucketSort implements SortAlgo {
             }
         }
         //桶的容量
+        //（由于桶的数量越接近n，数据均匀分布，每个桶的元素数量相对平衡，桶排序的时间复杂度越接近O(n)，所以要除以length）
         int bucketCapacity = (max - min) / length;
         //桶的数量
+        //（+ 1是因为(arr[i] - min) / bucketCapacity）索引桶的时候，最大值不会超出数组下标，因为下标从0开始
         int bucketCount = (max - min) / bucketCapacity + 1;
         //一维为桶的数量，二维展开为每个桶的容量（存放的数据）
         int[][] buckets = new int[bucketCount][bucketCapacity];
-        //长度为桶数量的索引数组，每个位置记录二维的索引
+        //长度为桶数量的索引数组，每个位置记录二维度数组的索引
         int[] indexArr = new int[bucketCount];
 
         //将数组中值分配到各个桶里
