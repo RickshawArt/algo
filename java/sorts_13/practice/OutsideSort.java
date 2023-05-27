@@ -19,13 +19,15 @@ public class OutsideSort {
         int maxCapital = 90;
         //小写的放left，大写的放right
         int left = 0, right = arr.length - 1;
-        for (int i = 0; i < right; i++) {
+        int i = 0;
+        while (i < right) {
             if (arr[i] < maxCapital) {
                 swap(arr, i, right);
                 right--;
             } else if (arr[i] > maxCapital) {
                 swap(arr, i, left);
                 left++;
+                i++;
             }
         }
     }
@@ -37,7 +39,35 @@ public class OutsideSort {
      * @since 2023/5/26 14:32
      */
     public static void caseNumPartition(char[] arr) {
-
+        //使用三路快排思路实现
+        //[0, left) -> 存放小写字母
+        //[left, i) -> 存放数字
+        //[right, arr.length -1] -> 存放大写字母
+        int maxNum = 57;
+        int maxCapital = 90;
+//        int maxLowerCase = 122;
+        //left：小写字母的最右边界，right：大写字母的最左边界
+        int left = 0, right = arr.length - 1;
+        //遍历指针，数字的最右开边界
+        int i = 0;
+        while (i <= right) {
+            if (arr[i] < maxNum) {
+                i++;
+            } else if (arr[i] <= maxCapital) {
+                //因为交换后的arr[i]不清楚是什么范围，所以i不能++，需要再此对新的arr[i]进行判断
+                swap(arr, i, right);
+                right--;
+            } else {
+                /*
+                1、i从左往右开始扫描，如果扫到大写字母都被放到right去了，
+                   所以i扫到小写字母，必然是小写字母和小写字母的交换和小写字母与数字的交换，所以i和left都要++
+                2、因为[left, i) -> 存放数字，意味着i >= left，所以left++，i也要++
+                */
+                swap(arr, i, left);
+                left++;
+                i++;
+            }
+        }
     }
 
     /**
@@ -60,7 +90,9 @@ public class OutsideSort {
 
 
     public static void main(String[] args) {
-        char[] arr = "D1a4FB2cb0z".toCharArray();
+        char[] arr = ("t1a4FB2cb0Z").toCharArray();
+//        arr = "GqwUIaYlKp".toCharArray();
+//        casePartition(arr);
         caseNumPartition(arr);
         for (char c : arr) {
             System.out.print(c);
