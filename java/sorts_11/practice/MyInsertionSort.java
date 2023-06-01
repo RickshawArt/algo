@@ -28,22 +28,16 @@ public class MyInsertionSort implements SortAlgo {
         if (length < 2) {
             return;
         }
-        //找出最小值，与arr[0]交换，作为哨兵元素
-        int minIndex = 0;
-        for (int i = 1; i < length; i++) {
-            if (arr[minIndex] > arr[i]) {
-                minIndex = i;
-            }
-        }
-        int min = arr[minIndex];
-        arr[minIndex] = arr[0];
-        arr[0] = min;
+        //找出最小值，与arr[0]交换，作为哨兵元素，方便最后还原
+        int minIndex = this.getMinIndex(arr, length);
+        this.swap(arr, minIndex, 0);
+        int min = arr[0];
         //arr[0]作为哨兵，暂存待排序元素
         for (int i = 2; i < length; i++) {
             arr[0] = arr[i];
             //j是有序区的尾部index
             int j = i - 1;
-            //此处哨兵省略了j >= 0的判断，因为j = 0，就会跳出循环
+            //此处哨兵省略了j >= 0的判断，因为j = 0，arr[j] == arr[0]就会跳出循环
             while (arr[j] > arr[0]) {
                 //依次往后挪位置
                 arr[j + 1] = arr[j];
@@ -54,6 +48,41 @@ public class MyInsertionSort implements SortAlgo {
         }
         //移除哨兵元素，把原始元素还原
         arr[0] = min;
+    }
+
+    /**
+     * 交换数组的两个值
+     * @param arr 数组
+     * @param i 要交换的索引
+     * @param j  要交换的索引
+     * @author Rickshaw
+     * @since 2023/6/1 14:27
+     */
+    private void swap(int[] arr, int i, int j) {
+        if (arr[i] == arr[j]) {
+            return;
+        }
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    /**
+     * 获取数组中最小值的index
+     * @param arr 数组
+     * @param length 排序长度
+     * @return int
+     * @author Rickshaw
+     * @since 2023/6/1 14:21
+     */
+    private int getMinIndex(int[] arr, int length) {
+        int minIndex = 0;
+        for (int i = 1; i < length; i++) {
+            if (arr[minIndex] > arr[i]) {
+                minIndex = i;
+            }
+        }
+        return minIndex;
     }
 
     /**
