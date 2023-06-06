@@ -1,5 +1,7 @@
 package Stack.java.search_15;
 
+import java.math.BigDecimal;
+
 /**
  * 二分查找
  *
@@ -62,12 +64,60 @@ public class MyBinarySearch {
         }
     }
 
+    /**
+     * 求一个数的平方根
+     * @param cal 计算数
+     * @param precision 精度
+     * @return double
+     * @author Rickshaw
+     * @since 2023/6/6 20:36
+     */
+    public double sqrt(double cal, int precision) {
+        BigDecimal gap = getGap(precision);
+        BigDecimal left = new BigDecimal("0");
+        BigDecimal right = new BigDecimal(String.valueOf(cal));
+        BigDecimal mid = null;
+        //区间范围 < 最小间隔就停下来
+        while (Math.abs(right.subtract(left).doubleValue()) >= gap.doubleValue()) {
+            BigDecimal half = new BigDecimal("2");
+            mid = left.add(right.subtract(left).divide(half));
+            if (mid.multiply(mid).doubleValue() == cal) {
+                return mid.doubleValue();
+            } else if (mid.multiply(mid).doubleValue() > cal) {
+                right = mid;
+            } else {
+                left = mid;
+            }
+        }
+        assert mid != null;
+        return mid.doubleValue();
+    }
+
+    /**
+     * 获取小数点后几位的最小间隔
+     * @param precision  精度
+     * @return java.math.BigDecimal
+     * @author Rickshaw
+     * @since 2023/6/6 20:50
+     */
+    private static BigDecimal getGap(int precision) {
+        BigDecimal gap = new BigDecimal("1");
+        BigDecimal incr = new BigDecimal("0.1");
+        for (int i = 0; i < precision; i++) {
+            gap = gap.multiply(incr);
+        }
+        return gap;
+    }
+
     public static void main(String[] args) {
         MyBinarySearch binarySearch = new MyBinarySearch();
         int[] arr = {8, 11, 19, 23, 27, 33, 45, 55, 67, 98};
 //        int index = binarySearch.simpleSearch(arr, arr.length, 45);
         int index = binarySearch.searchRecursion(arr, 0, arr.length - 1, 57);
         System.out.println("index = " + index);
+        System.out.println("binarySearch.sqrt(13513, 6) = " + binarySearch.sqrt(13513, 6));
+        BigDecimal multiply = new BigDecimal("116.2454301").multiply(new BigDecimal("116.2454301"));
+        System.out.println(multiply);
     }
 
 }
