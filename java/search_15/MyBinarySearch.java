@@ -1,6 +1,7 @@
 package Stack.java.search_15;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * 二分查找
@@ -72,41 +73,31 @@ public class MyBinarySearch {
      * @author Rickshaw
      * @since 2023/6/6 20:36
      */
-    public double sqrt(double cal, int precision) {
-        BigDecimal gap = getGap(precision);
-        BigDecimal left = new BigDecimal("0");
-        BigDecimal right = new BigDecimal(String.valueOf(cal));
+    public BigDecimal sqrt(int cal, int precision) {
+        if (cal < 0) {
+            throw new IllegalArgumentException("cal must be greater than or equal to 0");
+        }
+        BigDecimal operand = BigDecimal.valueOf(cal).setScale(6, RoundingMode.DOWN);
+        //直接去掉多余的小数点
+        if (cal == 0 || cal == 1) {
+            return operand;
+        }
+        BigDecimal low = BigDecimal.valueOf(0);
+        BigDecimal high = operand;
         BigDecimal mid = null;
-        //区间范围 < 最小间隔就停下来
-        while (Math.abs(right.subtract(left).doubleValue()) >= gap.doubleValue()) {
-            BigDecimal half = new BigDecimal("2");
-            mid = left.add(right.subtract(left).divide(half));
-            if (mid.multiply(mid).doubleValue() == cal) {
-                return mid.doubleValue();
-            } else if (mid.multiply(mid).doubleValue() > cal) {
-                right = mid;
+        while (high.compareTo(low) >= 0) {
+            mid = low.add(high.subtract(low).divide(BigDecimal.valueOf(2)));
+            BigDecimal midCompare = operand.divide(mid, 6, RoundingMode.DOWN);
+            if (mid.equals(midCompare)) {
+                break;
+            } else if (midCompare.compareTo(mid) > 0) {
+                low = mid;
             } else {
-                left = mid;
+                high = mid;
             }
         }
         assert mid != null;
-        return mid.doubleValue();
-    }
-
-    /**
-     * 获取小数点后几位的最小间隔
-     * @param precision  精度
-     * @return java.math.BigDecimal
-     * @author Rickshaw
-     * @since 2023/6/6 20:50
-     */
-    private static BigDecimal getGap(int precision) {
-        BigDecimal gap = new BigDecimal("1");
-        BigDecimal incr = new BigDecimal("0.1");
-        for (int i = 0; i < precision; i++) {
-            gap = gap.multiply(incr);
-        }
-        return gap;
+        return mid.setScale(6, RoundingMode.DOWN);
     }
 
     public static void main(String[] args) {
@@ -115,9 +106,8 @@ public class MyBinarySearch {
 //        int index = binarySearch.simpleSearch(arr, arr.length, 45);
         int index = binarySearch.searchRecursion(arr, 0, arr.length - 1, 57);
         System.out.println("index = " + index);
-        System.out.println("binarySearch.sqrt(13513, 6) = " + binarySearch.sqrt(13513, 6));
-        BigDecimal multiply = new BigDecimal("116.2454301").multiply(new BigDecimal("116.2454301"));
-        System.out.println(multiply);
+        BigDecimal sqrt = binarySearch.sqrt(1351, 6);
+        System.out.println("sqrt.doubleValue() = " + sqrt.doubleValue());
     }
 
 }
