@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
- * 二分查找
+ * 二分查找（上）
  *
  * @author Rickshaw
  * @version 1.0
