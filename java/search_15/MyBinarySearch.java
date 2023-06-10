@@ -77,18 +77,22 @@ public class MyBinarySearch {
         if (cal < 0) {
             throw new IllegalArgumentException("cal must be greater than or equal to 0");
         }
-        BigDecimal operand = BigDecimal.valueOf(cal).setScale(6, RoundingMode.DOWN);
         //直接去掉多余的小数点
+        BigDecimal operand = BigDecimal.valueOf(cal).setScale(6, RoundingMode.DOWN);
         if (cal == 0 || cal == 1) {
             return operand;
         }
         BigDecimal low = BigDecimal.valueOf(0);
         BigDecimal high = operand;
         BigDecimal mid = null;
+        BigDecimal gap = BigDecimal.valueOf(0.000001);
         while (high.compareTo(low) >= 0) {
-            mid = low.add(high.subtract(low).divide(BigDecimal.valueOf(2)));
+            mid = low.add(high.subtract(low).divide(BigDecimal.valueOf(2), 6, RoundingMode.DOWN));
+            //使用除法运算，防止溢出
             BigDecimal midCompare = operand.divide(mid, 6, RoundingMode.DOWN);
-            if (mid.equals(midCompare)) {
+            boolean isInRange = mid.subtract(midCompare).abs().compareTo(gap) <= 0;
+            //如果中点相等，或者误差 <= 0.000001，都证明找到了mid
+            if (mid.equals(midCompare) || isInRange) {
                 break;
             } else if (midCompare.compareTo(mid) > 0) {
                 low = mid;
@@ -97,7 +101,7 @@ public class MyBinarySearch {
             }
         }
         assert mid != null;
-        return mid.setScale(6, RoundingMode.DOWN);
+        return mid;
     }
 
     public static void main(String[] args) {
@@ -106,8 +110,9 @@ public class MyBinarySearch {
 //        int index = binarySearch.simpleSearch(arr, arr.length, 45);
         int index = binarySearch.searchRecursion(arr, 0, arr.length - 1, 57);
         System.out.println("index = " + index);
-        BigDecimal sqrt = binarySearch.sqrt(1351, 6);
+        BigDecimal sqrt = binarySearch.sqrt(53891, 6);
         System.out.println("sqrt.doubleValue() = " + sqrt.doubleValue());
+        System.out.println("sqrt.multiply(sqrt) = " + sqrt.multiply(sqrt));
     }
 
 }
