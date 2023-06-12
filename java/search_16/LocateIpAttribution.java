@@ -1,12 +1,14 @@
 package Stack.java.search_16;
 
-import java.util.ArrayList;
+import Stack.java.service.SortAlgo;
+import Stack.java.sorts_11.practice.MyInsertionSort;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 快速定位出一个 IP 地址的归属地
+ * 快速定位出一个 ip 地址的归属地
  *
  * @author Rickshaw
  * @version 1.0
@@ -14,8 +16,14 @@ import java.util.Map;
  */
 public class LocateIpAttribution {
 
+    private final SortAlgo sortAlgo;
+
+    public LocateIpAttribution(SortAlgo sortAlgo) {
+        this.sortAlgo = sortAlgo;
+    }
+
     /**
-     * IP区间与归属地的对应关系
+     * ip 区间与归属地的对应关系
      */
     private static final Map<String, String> IP_ADDRESS_LIBRARY = new HashMap<>();
 
@@ -29,24 +37,40 @@ public class LocateIpAttribution {
     }
 
     /**
-     * 根据IP地址获取对应的归属地
-     * @param ipAddress IP地址
+     * 根据 ip地址获取对应的归属地
+     * @param ipAddress ip地址
      * @return java.lang.String 归属地
      * @author Rickshaw
      * @since 2023/6/12 17:22
      */
     public String getAttribution(String ipAddress) {
-        //IP区间头部的集合
-        List<String> ipHeaderList = new ArrayList<>(IP_ADDRESS_LIBRARY.size());
-        IP_ADDRESS_LIBRARY.keySet().forEach((key) -> {
-            // TODO: 2023/6/12
-        });
+        long ipToLong = this.ipToLong(ipAddress);
+        long[] ipHeaderArr = this.getIpHeaderArr();
+        this.sortAlgo.sort(ipHeaderArr);
+        //通过二分法找到最后一个 < ipToLong的元素
+        // TODO: 2023/6/13  
         return null;
     }
 
     /**
-     * 把IP地址转化为二进制的长整形
-     * @param ipAddress  IP地址
+     * 根据地址库取出头区间的 ip转换成长整型放进数组
+     * @return long[]
+     * @author Rickshaw
+     * @since 2023/6/12 23:18
+     */
+    private long[] getIpHeaderArr() {
+        long[] ipHeaderArr = new long[IP_ADDRESS_LIBRARY.size()];
+        AtomicInteger i = new AtomicInteger();
+        IP_ADDRESS_LIBRARY.keySet().forEach((key) -> {
+            String ipHeader = key.substring(1, key.lastIndexOf(","));
+            ipHeaderArr[i.getAndIncrement()] = this.ipToLong(ipHeader);
+        });
+        return ipHeaderArr;
+    }
+
+    /**
+     * 把 ip地址转化为十进制的长整形
+     * @param ipAddress  ip地址
      * @return long 十进制长整形
      * @author Rickshaw
      * @since 2023/6/12 15:46
@@ -63,7 +87,8 @@ public class LocateIpAttribution {
     }
 
     public static void main(String[] args) {
-
+        LocateIpAttribution locateIpAttribution = new LocateIpAttribution(new MyInsertionSort());
+        locateIpAttribution.getAttribution("202.102.50.119");
     }
 
 }

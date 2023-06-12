@@ -12,7 +12,7 @@ import Stack.java.service.SortAlgo;
 public class MyMergeSort implements SortAlgo {
 
     @Override
-    public void sort(int[] arr, int length) {
+    public void sort(long[] arr, int length) {
         if (length <= 1) {
             return;
         }
@@ -20,7 +20,7 @@ public class MyMergeSort implements SortAlgo {
     }
 
     @Override
-    public void sort(int[] arr) {
+    public void sort(long[] arr) {
         this.sort(arr, arr.length);
     }
 
@@ -32,7 +32,7 @@ public class MyMergeSort implements SortAlgo {
      * @author Rickshaw
      * @since 2023/5/10 9:19
      */
-    private void sortRecursion(int[] arr, int left, int right) {
+    private void sortRecursion(long[] arr, int left, int right) {
         //递归结束的条件，区间不可再分（区间只剩一个元素）
         if (left >= right) {
             return;
@@ -56,15 +56,15 @@ public class MyMergeSort implements SortAlgo {
      * @author Rickshaw
      * @since 2023/5/10 10:11
      */
-    private void sentinelMerge(int[] arr, int left, int mid, int right) {
+    private void sentinelMerge(long[] arr, int left, int mid, int right) {
         //因为索引从0开始，而且还要预留一个哨兵节点，所以是+2
-        int[] leftArr = new int[mid - left + 2];
+        long[] leftArr = new long[mid - left + 2];
         for (int i = 0; i < mid - left + 1; i++) {
             leftArr[i] = arr[left + i];
         }
         leftArr[mid - left + 1] = Integer.MAX_VALUE;
 
-        int[] rightArr = new int[right - mid + 1];
+        long[] rightArr = new long[right - mid + 1];
         for (int i = 0; i < right - mid; i++) {
             rightArr[i] = arr[mid + 1 + i];
         }
@@ -125,7 +125,7 @@ public class MyMergeSort implements SortAlgo {
 
     public static void main(String[] args) {
         SortAlgo myMergeSort = new MyMergeSort();
-        int[] arr = {1, 5, 4, 7, 2, 6};
+        long[] arr = {1, 5, 4, 7, 2, 6};
         myMergeSort.sort(arr);
         myMergeSort.printArr(arr);
     }

@@ -15,7 +15,7 @@ public interface SortAlgo {
      * @author Rickshaw
      * @since 2023/5/15 14:46
      */
-    void sort(int[] arr);
+    void sort(long[] arr);
 
     /**
      * 升序排序
@@ -24,7 +24,7 @@ public interface SortAlgo {
      * @author Rickshaw
      * @since 2023/5/17 16:40
      */
-    void sort(int[] arr, int length);
+    void sort(long[] arr, int length);
 
     /**
      * 打印数组
@@ -32,9 +32,9 @@ public interface SortAlgo {
      * @author Rickshaw
      * @since 2023/5/15 14:53
      */
-    default void printArr(int[] arr) {
+    default void printArr(long[] arr) {
         System.out.print("printArr: ");
-        for (int j : arr) {
+        for (long j : arr) {
             System.out.print(j + " ");
         }
         System.out.println();

@@ -11,14 +11,14 @@ import Stack.java.service.SortAlgo;
  */
 public class MySelectionSort implements SortAlgo {
     @Override
-    public void sort(int[] arr, int length) {
+    public void sort(long[] arr, int length) {
         if (length <= 1) {
             return;
         }
         //未排序区遍历找到的最小值
         int minIndex;
         //用于交换数据的变量
-        int exchange;
+        long exchange;
         //i: 已排序区序号
         for (int i = 0; i < length - 1; i++) {
             minIndex = i;
@@ -38,12 +38,12 @@ public class MySelectionSort implements SortAlgo {
     }
 
     @Override
-    public void sort(int[] arr) {
+    public void sort(long[] arr) {
         this.sort(arr, arr.length);
     }
 
     public static void main(String[] args) {
-        int[] arr = {1, 5, 4, 7, 2, 6};
+        long[] arr = {1, 5, 4, 7, 2, 6};
         SortAlgo bubbleSort = new MySelectionSort();
         bubbleSort.sort(arr);
         bubbleSort.printArr(arr);

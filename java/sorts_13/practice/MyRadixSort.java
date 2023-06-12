@@ -12,17 +12,17 @@ import Stack.java.service.SortAlgo;
 public class MyRadixSort implements SortAlgo{
 
     @Override
-    public void sort(int[] arr) {
+    public void sort(long[] arr) {
         this.sort(arr, arr.length);
     }
 
     @Override
-    public void sort(int[] arr, int length) {
+    public void sort(long[] arr, int length) {
         if (length < 2) {
             return;
         }
         //找出最大值
-        int max = getMaxVal(arr, length);
+        long max = getMaxVal(arr, length);
         //exp代表每个位数，从低位到高位
         for (int exp = 1; max / exp > 0; exp *= 10) {
             //使用计数排序对每个位数进行排序
@@ -37,13 +37,13 @@ public class MyRadixSort implements SortAlgo{
      * @author Rickshaw
      * @since 2023/5/26 9:18
      */
-    private void countingSort(int[] arr, int length, int exp) {
+    private void countingSort(long[] arr, int length, int exp) {
         //计数数组
         int[] countArr = new int[10];
-        int[] tempArr = new int[length];
+        long[] tempArr = new long[length];
         //把每个位数取余10后放入计数数组计数
         for (int i = 0; i < length; i++) {
-            int index = arr[i] / exp % 10;
+            int index = Math.toIntExact(arr[i] / exp % 10);
             countArr[index]++;
         }
         //把计数数组countArr的前一位和后一位累加
@@ -52,7 +52,7 @@ public class MyRadixSort implements SortAlgo{
         }
         //将排序好的数据放入临时数组tempArr
         for (int i = length - 1; i >= 0; i--) {
-            int index = arr[i] / exp % 10;
+            int index = Math.toIntExact(arr[i] / exp % 10);
             tempArr[--countArr[index]] = arr[i];
         }
         //把排序后的数据赋值回原数组
@@ -67,8 +67,8 @@ public class MyRadixSort implements SortAlgo{
      * @author Rickshaw
      * @since 2023/5/26 9:16
      */
-    private int getMaxVal(int[] arr, int length) {
-        int max = arr[0];
+    private long getMaxVal(long[] arr, int length) {
+        long max = arr[0];
         for (int i = 1; i < length; i++) {
             if (max < arr[i]) {
                 max = arr[i];
@@ -79,7 +79,7 @@ public class MyRadixSort implements SortAlgo{
 
     public static void main(String[] args) {
         SortAlgo radixSort = new MyRadixSort();
-        int[] arr = {170, 45, 75, 90, 802, 24, 2, 66};
+        long[] arr = {170, 45, 75, 90, 802, 24, 2, 66};
         radixSort.sort(arr);
         radixSort.printArr(arr);
     }

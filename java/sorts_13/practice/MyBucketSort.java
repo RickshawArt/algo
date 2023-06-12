@@ -22,12 +22,12 @@ public class MyBucketSort implements SortAlgo {
     }
 
     @Override
-    public void sort(int[] arr, int length) {
+    public void sort(long[] arr, int length) {
         if (length < 2) {
             return;
         }
-        int min = arr[0], max = arr[1];
-        for (int j : arr) {
+        long min = arr[0], max = arr[1];
+        for (long j : arr) {
             if (j > max) {
                 max = j;
             } else if (j < min) {
@@ -36,19 +36,19 @@ public class MyBucketSort implements SortAlgo {
         }
         //桶的容量
         //（由于桶的数量越接近n，数据均匀分布，每个桶的元素数量相对平衡，桶排序的时间复杂度越接近O(n)，所以要除以length）
-        int bucketCapacity = (max - min) / length;
+        int bucketCapacity = Math.toIntExact((max - min) / length);
         //桶的数量
         //（+ 1是因为(arr[i] - min) / bucketCapacity）索引桶的时候，最大值不会超出数组下标，因为下标从0开始
-        int bucketCount = (max - min) / bucketCapacity + 1;
+        int bucketCount = Math.toIntExact((max - min) / bucketCapacity + 1);
         //一维为桶的数量，二维展开为每个桶的容量（存放的数据）
-        int[][] buckets = new int[bucketCount][bucketCapacity];
+        long[][] buckets = new long[bucketCount][bucketCapacity];
         //长度为桶数量的索引数组，每个位置记录二维度数组的索引
         int[] indexArr = new int[bucketCount];
 
         //将数组中值分配到各个桶里
-        for (int j : arr) {
+        for (long j : arr) {
             //判断放入哪个桶
-            int bucketIndex = (j - min) / bucketCapacity;
+            int bucketIndex = Math.toIntExact((j - min) / bucketCapacity);
             //判断是否需要扩容
             if (indexArr[bucketIndex] == buckets[bucketIndex].length) {
                 ensureCapacity(buckets, bucketIndex);
@@ -71,7 +71,7 @@ public class MyBucketSort implements SortAlgo {
     }
 
     @Override
-    public void sort(int[] arr) {
+    public void sort(long[] arr) {
         this.sort(arr, arr.length);
     }
 
@@ -82,15 +82,15 @@ public class MyBucketSort implements SortAlgo {
      * @author Rickshaw
      * @since 2023/5/17 14:34
      */
-    private void ensureCapacity(int[][] buckets, int bucketIndex) {
-        int[] newArr = new int[buckets[bucketIndex].length * 2];
+    private void ensureCapacity(long[][] buckets, int bucketIndex) {
+        long[] newArr = new long[buckets[bucketIndex].length * 2];
         System.arraycopy(buckets[bucketIndex], 0, newArr, 0, buckets[bucketIndex].length);
         buckets[bucketIndex] = newArr;
     }
 
     public static void main(String[] args) {
         SortAlgo bucketSort = new MyBucketSort(new MyMergeSort());
-        int[] arr = {22, 5, 11, 41, 45, 26, 29, 10, 7, 8, 30, 27, 42, 43, 40, 7};
+        long[] arr = {22, 5, 11, 41, 45, 26, 29, 10, 7, 8, 30, 27, 42, 43, 40, 7};
         bucketSort.sort(arr);
         bucketSort.printArr(arr);
     }

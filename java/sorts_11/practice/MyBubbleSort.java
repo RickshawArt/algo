@@ -11,17 +11,17 @@ import Stack.java.service.SortAlgo;
  */
 public class MyBubbleSort implements SortAlgo {
     @Override
-    public void sort(int[] arr) {
+    public void sort(long[] arr) {
         this.sort(arr, arr.length);
     }
 
     @Override
-    public void sort(int[] arr, int length) {
+    public void sort(long[] arr, int length) {
         if (length <= 1) {
             return;
         }
         //用于交换变量
-        int exchange = 0;
+        long exchange = 0;
         for (int i = 0; i < length - 1; i++) {
             //如果下一次没有进行比较交换逻辑，则证明已排序好
             boolean isSorted = true;
@@ -41,7 +41,7 @@ public class MyBubbleSort implements SortAlgo {
 
 
     public static void main(String[] args) {
-        int[] arr = {1, 5, 4, 7, 2, 6};
+        long[] arr = {1, 5, 4, 7, 2, 6};
         SortAlgo bubbleSort = new MyBubbleSort();
         bubbleSort.sort(arr);
         bubbleSort.printArr(arr);

@@ -12,12 +12,12 @@ import Stack.java.service.SortAlgo;
 public class MyQuickSort implements SortAlgo {
 
     @Override
-    public void sort(int[] arr) {
+    public void sort(long[] arr) {
         this.sort(arr, arr.length);
     }
 
     @Override
-    public void sort(int[] arr, int length) {
+    public void sort(long[] arr, int length) {
         if (length <= 1) {
             return;
         }
@@ -32,7 +32,7 @@ public class MyQuickSort implements SortAlgo {
      * @author Rickshaw
      * @since 2023/5/12 10:57
      */
-    private void quickSortRecursion(int[] arr, int left, int right) {
+    private void quickSortRecursion(long[] arr, int left, int right) {
         if (left >= right) {
             return;
         }
@@ -50,9 +50,9 @@ public class MyQuickSort implements SortAlgo {
      * @author Rickshaw
      * @since 2023/5/12 10:52
      */
-    private int partition(int[] arr, int left, int right) {
+    private int partition(long[] arr, int left, int right) {
         //取区间的最右的边界点作为支点
-        int pivot = arr[right];
+        long pivot = arr[right];
         //以i为分界点，左边 <= pivot，右边 > pivot；j用于遍历数组，跟pivot进行比较
         int i = left, j = left;
         for (; j < right; j++) {
@@ -74,15 +74,15 @@ public class MyQuickSort implements SortAlgo {
      * @author Rickshaw
      * @since 2023/5/12 10:46
      */
-    private static void swap(int[] arr, int i, int j) {
-        int temp = arr[j];
+    private static void swap(long[] arr, int i, int j) {
+        long temp = arr[j];
         arr[j] = arr[i];
         arr[i] = temp;
     }
 
     public static void main(String[] args) {
         SortAlgo myQuickSort = new MyQuickSort();
-        int[] arr = {8, 10, 2, 3, 6, 1, 5};
+        long[] arr = {8, 10, 2, 3, 6, 1, 5};
         myQuickSort.sort(arr);
         myQuickSort.printArr(arr);
     }

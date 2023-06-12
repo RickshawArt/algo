@@ -12,7 +12,7 @@ import Stack.java.service.SortAlgo;
 public class MyShellSort implements SortAlgo {
 
     @Override
-    public void sort(int[] arr, int length) {
+    public void sort(long[] arr, int length) {
         if (length <= 1) {
             return;
         }
@@ -22,7 +22,7 @@ public class MyShellSort implements SortAlgo {
             for (int i = step; i < length; i++) {
                 int j = i;
                 //待排序元素
-                int value = arr[j];
+                long value = arr[j];
                 //如果比组内前一个元素小，则进行交换
                 while (j - step >= 0 && value < arr[j - step]) {
                     //组内插入排序
@@ -35,12 +35,12 @@ public class MyShellSort implements SortAlgo {
     }
 
     @Override
-    public void sort(int[] arr) {
+    public void sort(long[] arr) {
         this.sort(arr, arr.length);
     }
 
     public static void main(String[] args) {
-        int[] arr = {1, 5, 4, 7, 2, 6};
+        long[] arr = {1, 5, 4, 7, 2, 6};
         SortAlgo bubbleSort = new MyShellSort();
         bubbleSort.sort(arr);
         bubbleSort.printArr(arr);

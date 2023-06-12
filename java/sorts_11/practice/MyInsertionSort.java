@@ -12,7 +12,7 @@ import Stack.java.service.SortAlgo;
 public class MyInsertionSort implements SortAlgo {
 
     @Override
-    public void sort(int[] arr, int length) {
+    public void sort(long[] arr, int length) {
 //        sortWithoutSentinel(arr, length);
         sortWithSentinel(arr, length);
     }
@@ -24,14 +24,14 @@ public class MyInsertionSort implements SortAlgo {
      * @author Rickshaw
      * @since 2023/5/30 14:11
      */
-    private void sortWithSentinel(int[] arr, int length) {
+    private void sortWithSentinel(long[] arr, int length) {
         if (length < 2) {
             return;
         }
         //找出最小值，与arr[0]交换，作为哨兵元素，方便最后还原
         int minIndex = this.getMinIndex(arr, length);
         this.swap(arr, minIndex, 0);
-        int min = arr[0];
+        long min = arr[0];
         //arr[0]作为哨兵，暂存待排序元素
         for (int i = 2; i < length; i++) {
             arr[0] = arr[i];
@@ -58,11 +58,11 @@ public class MyInsertionSort implements SortAlgo {
      * @author Rickshaw
      * @since 2023/6/1 14:27
      */
-    private void swap(int[] arr, int i, int j) {
+    private void swap(long[] arr, int i, int j) {
         if (arr[i] == arr[j]) {
             return;
         }
-        int temp = arr[i];
+        long temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
     }
@@ -75,7 +75,7 @@ public class MyInsertionSort implements SortAlgo {
      * @author Rickshaw
      * @since 2023/6/1 14:21
      */
-    private int getMinIndex(int[] arr, int length) {
+    private int getMinIndex(long[] arr, int length) {
         int minIndex = 0;
         for (int i = 1; i < length; i++) {
             if (arr[minIndex] > arr[i]) {
@@ -114,12 +114,12 @@ public class MyInsertionSort implements SortAlgo {
     }
 
     @Override
-    public void sort(int[] arr) {
+    public void sort(long[] arr) {
         this.sort(arr, arr.length);
     }
 
     public static void main(String[] args) {
-        int[] arr = {7, 5, 4, 1, 2, 6};
+        long[] arr = {7, 5, 4, 1, 2, 6};
         SortAlgo bubbleSort = new MyInsertionSort();
         bubbleSort.sort(arr);
         bubbleSort.printArr(arr);
