@@ -31,20 +31,21 @@ public class RotateSortedArray {
                 1、arr[mid] == arr[low]的情况分两种
                     （1）mid == low，旋转点在右侧
                     （2）存在重复元素，旋转点也在右侧
-                    num旋转点在mid右侧的情况，都必须进入arr[mid] > arr[low]的分支，所以要加上等号
+                    arr旋转点在mid右侧的情况，都必须进入arr[mid] > arr[low]的分支，
+                    也就是左半边有序区间，所以要加上等号
                 2、如果不加等号，mid在区间只有两个数的时候一定是0，那么a[0]<mid]一定不成立，这时，
                    在else的条件下，右指针会向左偏移一位，从而失去 第二个数 ，导致无法被查询。
                    比如[2,1]，target = 1，可以查询得到2，但是查不到1
              */
             if (arr[mid] >= arr[low]) {
-                //旋转点在mid的右侧，[low, mid]是有序区间
+                //旋转点在mid的右侧，左半边[low, mid]是有序区间
                 if (val >= arr[low] && val < arr[mid]) {
                     high = mid - 1;
                 } else {
                     low = mid + 1;
                 }
             } else {
-                //旋转点在mid的左侧，[mid, high]是有序区间
+                //旋转点在mid的左侧，右半边[mid, high]是有序区间
                 if (val > arr[mid] && val <= arr[high]) {
                     low = mid + 1;
                 } else {
