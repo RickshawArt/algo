@@ -16,6 +16,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class LocateIpAttribution {
 
+    /**
+     * 排序算法
+     */
     private final SortAlgo sortAlgo;
 
     public LocateIpAttribution(SortAlgo sortAlgo) {
@@ -48,8 +51,60 @@ public class LocateIpAttribution {
         long[] ipHeaderArr = this.getIpHeaderArr();
         this.sortAlgo.sort(ipHeaderArr);
         //通过二分法找到最后一个 < ipToLong的元素
-        // TODO: 2023/6/13  
-        return null;
+        int index = searchIp(ipHeaderArr, ipToLong);
+        if (index == -1) {
+            throw new RuntimeException("没有找到对应的归属地");
+        }
+        long targetIp = ipHeaderArr[index];
+        //通过地址库找到对应的归属地并返回
+        Map.Entry<String, String> mapEntry = IP_ADDRESS_LIBRARY.entrySet().stream().filter((entry) -> {
+            String key = entry.getKey();
+            long headerIp = ipToLong(key.substring(1, key.lastIndexOf(",")));
+            long tailIp = ipToLong(key.substring(key.lastIndexOf(",") + 2, key.length() - 1));
+            //要查找的 ip 在区间内，才算找到
+            return targetIp == headerIp && ipToLong <= tailIp;
+        }).findFirst().orElseThrow(() -> new RuntimeException("没有找到对应的归属地"));
+        return mapEntry.getValue();
+    }
+
+    /**
+     * 把十进制的长整形转化为  ip地址
+     * @param ip 十进制的长整形
+     * @return java.lang.String
+     * @author Rickshaw
+     * @since 2023/6/13 9:11
+     */
+    private String longToIp(long ip) {
+        long part1 = ip >> 24 & 0xFF;
+        long part2 = ip >> 16 & 0xFF;
+        long part3 = ip >> 8 & 0xFF;
+        long part4 = ip & 0xFF;
+        return part1 + "." + part2 + "." + part3 + "." + part4;
+    }
+
+    /**
+     * 通过二分法查找最后一个 < val 的元素
+     * @param arr   有序数组
+     * @param val   要查找的元素
+     * @return int  数组索引
+     * @author Rickshaw
+     * @since 2023/6/13 8:48
+     */
+    private int searchIp(long[] arr, long val) {
+        int low = 0, high = arr.length - 1;
+        while (low <= high) {
+            int mid = low + (high - low >> 1);
+            if (arr[mid] <= val) {
+                if (mid == arr.length - 1 || arr[mid + 1] > val) {
+                    return mid;
+                } else {
+                    low = mid + 1;
+                }
+            } else {
+                high = mid - 1;
+            }
+        }
+        return -1;
     }
 
     /**
@@ -88,7 +143,8 @@ public class LocateIpAttribution {
 
     public static void main(String[] args) {
         LocateIpAttribution locateIpAttribution = new LocateIpAttribution(new MyInsertionSort());
-        locateIpAttribution.getAttribution("202.102.50.119");
+        String attribution = locateIpAttribution.getAttribution("202.102.111.20");
+        System.out.println("attribution = " + attribution);
     }
 
 }

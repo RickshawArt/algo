@@ -2,7 +2,7 @@ package Stack.java.search_16;
 
 /**
  * 二分查找（下）
- *
+ * 技巧：逐步逼近直到边界（条件不成立），则证明找到了该元素
  * @author Rickshaw
  * @version 1.0
  * @since 2023/6/10 12:56
