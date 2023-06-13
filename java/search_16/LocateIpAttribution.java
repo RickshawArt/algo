@@ -130,7 +130,7 @@ public class LocateIpAttribution {
      * @author Rickshaw
      * @since 2023/6/12 15:46
      */
-    public long ipToLong(String ipAddress) {
+    private long ipToLong(String ipAddress) {
         String[] parts = ipAddress.split("\\.");
         long ret = 0L;
         for (String part : parts) {
