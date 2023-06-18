@@ -36,7 +36,7 @@ public class SkipList {
         Node newNode = new Node();
         newNode.data = value;
         newNode.maxLevel = level;
-        Node update[] = new Node[level];
+        Node[] update = new Node[level];
         for (int i = 0; i < level; ++i) {
             update[i] = head;
         }
@@ -133,12 +133,12 @@ public class SkipList {
         skipList.insert(8);
         skipList.insert(4);
         skipList.delete(4);
-//        skipList.insert(7);
-//        skipList.insert(6);
-//        skipList.insert(1);
-//        skipList.insert(5);
-//        skipList.insert(3);
-//        skipList.insert(2);
+        skipList.insert(7);
+        skipList.insert(6);
+        skipList.insert(1);
+        skipList.insert(5);
+        skipList.insert(3);
+        skipList.insert(2);
         System.out.println("skipList = " + skipList);
     }
 
