@@ -72,6 +72,7 @@ public class SkipList {
             update[i] = p;
         }
 
+        //排除多余的循环判断，提高方法执行时间，如果第0层都没有要删除的元素，则直接跳过此部分逻辑
         if (p.forwards[0] != null && p.forwards[0].data == value) {
             for (int i = levelCount - 1; i >= 0; --i) {
                 if (update[i].forwards[i] != null && update[i].forwards[i].data == value) {
