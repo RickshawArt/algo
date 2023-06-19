@@ -1,7 +1,7 @@
 package Stack.java.skiplist_17.practice;
 
 
-import java.util.Arrays;
+import java.lang.reflect.Array;
 
 /**
  * 跳表实现练习，不存储重复元素
@@ -41,8 +41,8 @@ public class MySkipList<E extends Comparable<E>> {
         /**
          * 当前节点的每一层的next节点数组
          */
-        @SuppressWarnings({"unchecked", "DataFlowIssue"})
-        private final Node[] nextNodes = (Node[]) new Object[DEFAULT_MAX_LEVEL];
+        @SuppressWarnings("unchecked")
+        private final Node[] nextNodes = (Node[]) Array.newInstance(Node.class, DEFAULT_MAX_LEVEL);
 
         /**
          * 当前节点的层级
@@ -63,7 +63,6 @@ public class MySkipList<E extends Comparable<E>> {
         public String toString() {
             return "Node{" +
                     "data=" + data +
-                    ", nextNodes=" + Arrays.toString(nextNodes) +
                     ", maxLevel=" + maxLevel +
                     '}';
         }
@@ -76,9 +75,9 @@ public class MySkipList<E extends Comparable<E>> {
      * @author Rickshaw
      * @since 2023/6/17 15:40
      */
-    @SuppressWarnings({"unchecked", "DataFlowIssue"})
+    @SuppressWarnings("unchecked")
     private MySkipList<E>.Node[] getNodes(int length) {
-        return (Node[]) new Object[length];
+        return (Node[]) Array.newInstance(Node.class, length);
     }
 
     /**
@@ -95,19 +94,10 @@ public class MySkipList<E extends Comparable<E>> {
         //level是当前节点的索引层数
         Node newNode = new Node(e, level);
 
-        Node[] preNodes = this.getNodes(level);
-        Node iterator = this.head;
-        //遍历索引层数
-        for (int i = level - 1; i >= 0; i--) {
-            //找到每层要插入的前驱位置（ < e 的最大值位置）
-            while (iterator.nextNodes[i] != null && e.compareTo(iterator.nextNodes[i].data) < 0) {
-                iterator = iterator.nextNodes[i];
-            }
-            preNodes[i] = iterator;
-        }
+        Node[] preNodes = getPreNodes(e, level);
 
         //newNode插入操作
-        for (int i = level; i > 0; i--) {
+        for (int i = level - 1; i >= 0; i--) {
             //在update的node数组插入newNode，先用newNode接上后面的Node节点；
             //如果先接newNode节点会丢失update插入点后面的节点
             newNode.nextNodes[i] = preNodes[i].nextNodes[i];
@@ -118,6 +108,28 @@ public class MySkipList<E extends Comparable<E>> {
         if (this.maxIndexLevel < level) {
             this.maxIndexLevel = level;
         }
+    }
+
+    /**
+     * 找到每个索引层要插入的前驱位置（ < e 的最大值位置）
+     * @param e     要插入的 e元素
+     * @param level    索引层数
+     * @return Stack.java.skiplist_17.practice.MySkipList.Node[]
+     * @author Rickshaw
+     * @since 2023/6/20 1:07
+     */
+    private Node[] getPreNodes(E e, int level) {
+        Node[] preNodes = this.getNodes(level);
+        Node iterator = this.head;
+        //遍历索引层数
+        for (int i = level - 1; i >= 0; i--) {
+            //找到每层要插入的前驱位置（ < e 的最大值位置）
+            while (iterator.nextNodes[i] != null && e.compareTo(iterator.nextNodes[i].data) > 0) {
+                iterator = iterator.nextNodes[i];
+            }
+            preNodes[i] = iterator;
+        }
+        return preNodes;
     }
 
     /**
@@ -134,12 +146,15 @@ public class MySkipList<E extends Comparable<E>> {
         Node ret = this.head;
         //从索引顶层向下检索元素，直到0层并且 >= e 停止
         for (int i = this.maxIndexLevel - 1; i >= 0; i--) {
-            while (ret.nextNodes[i] != null && e.compareTo(ret.nextNodes[i].data) < 0) {
+            while (ret.nextNodes[i] != null && e.compareTo(ret.nextNodes[i].data) > 0) {
                 ret = ret.nextNodes[i];
             }
         }
-        if (ret.nextNodes[0].data != null && e.compareTo(ret.nextNodes[0].data) == 0) {
-            return ret.nextNodes[0];
+        if (ret.nextNodes[0] != null) {
+            assert ret.nextNodes[0].data != null;
+            if (e.compareTo(ret.nextNodes[0].data) == 0) {
+                return ret.nextNodes[0];
+            }
         }
         return null;
     }
@@ -152,14 +167,7 @@ public class MySkipList<E extends Comparable<E>> {
      */
     public void remove(E e) {
         //找到每层要插入的前驱位置（ < e 的最大值位置）
-        Node[] preNodes = this.getNodes(maxIndexLevel);
-        Node iterator = this.head;
-        for (int i = this.maxIndexLevel - 1; i >= 0; i--) {
-            while (iterator.nextNodes[i] != null && e.compareTo(iterator.nextNodes[i].data) < 0) {
-                iterator = iterator.nextNodes[i];
-            }
-            preNodes[i] = iterator;
-        }
+        Node[] preNodes = getPreNodes(e, maxIndexLevel);
 
         //排除多余的循环判断，提高方法执行时间，如果第0层都没有要删除的元素，则直接跳过此部分逻辑
         if (preNodes[0].nextNodes[0].data != null && e.compareTo(preNodes[0].nextNodes[0].data) == 0) {
@@ -172,6 +180,7 @@ public class MySkipList<E extends Comparable<E>> {
             }
         }
 
+        //索引层的首元素如果为空，则证明该层没有元素，可以移除该层
         while (this.maxIndexLevel > 1 && this.head.nextNodes[maxIndexLevel] == null) {
             this.maxIndexLevel--;
         }
@@ -186,7 +195,7 @@ public class MySkipList<E extends Comparable<E>> {
         Node iterator = this.head;
         System.out.println("printAll: ");
         while (iterator.nextNodes[0] != null) {
-            System.out.print(iterator.nextNodes[0] + " ");
+            System.out.println(iterator.nextNodes[0] + " ");
             iterator = iterator.nextNodes[0];
         }
         System.out.println();
@@ -219,6 +228,10 @@ public class MySkipList<E extends Comparable<E>> {
         mySkipList.insert(3);
         mySkipList.remove(5);
         mySkipList.insert(11);
+        mySkipList.remove(3);
+        mySkipList.remove(11);
+        MySkipList<Integer>.Node node = mySkipList.find(11);
+        System.out.println("node = " + node);
         mySkipList.printAll();
     }
 

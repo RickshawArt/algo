@@ -140,7 +140,7 @@ public class SkipList {
         skipList.insert(5);
         skipList.insert(3);
         skipList.insert(2);
-        System.out.println("skipList = " + skipList);
+        skipList.printAll();
     }
 
 }
