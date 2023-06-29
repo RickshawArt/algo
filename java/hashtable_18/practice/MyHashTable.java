@@ -61,7 +61,7 @@ public class MyHashTable<K, V> {
             throw new IllegalArgumentException("Illegal load factor: " + loadFactor);
         }
         this.loadFactor = loadFactor;
-        this.tableCapacity = initialCapacity;
+        this.tableCapacity = tableSizeFor(initialCapacity);
     }
 
     public MyHashTable(int initialCapacity) {
@@ -108,6 +108,7 @@ public class MyHashTable<K, V> {
     public V put(K key, V value) {
         //懒加载数组
         resize();
+        // TODO: 2023/6/29  
         return value;
     }
 
@@ -121,6 +122,7 @@ public class MyHashTable<K, V> {
             adjustSize(DEFAULT_INITIAL_CAPACITY);
             return;
         }
+        // TODO: 2023/6/29  
     }
 
     /**
