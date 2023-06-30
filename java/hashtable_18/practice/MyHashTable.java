@@ -22,12 +22,12 @@ public class MyHashTable<K, V> {
     /**
      * 散列表
      */
-    private MyHashTable.Node<K,V>[] table;
+    private Node<K,V>[] table;
 
     /**
      * 散列表的容量
      */
-    private final int tableCapacity;
+    private int tableCapacity;
 
     /**
      * 默认的加载因子
@@ -35,7 +35,7 @@ public class MyHashTable<K, V> {
     private static final float DEFAULT_LOAD_FACTOR = 0.75f;
 
     /**
-     * 加载因子，实际元素数量 / 数组容量
+     * 加载因子 = 实际元素数量 / 数组容量
      */
     private final float loadFactor;
 
@@ -107,22 +107,115 @@ public class MyHashTable<K, V> {
      */
     public V put(K key, V value) {
         //懒加载数组
-        resize();
-        // TODO: 2023/6/29  
+        if (this.table == null) {
+            this.table = this.getNodeArr(this.tableCapacity);
+        }
+        int index = hash(key) & (this.tableCapacity - 1);
+        if (this.table[index] == null) {
+            //设置哨兵节点
+            this.table[index] = new Node<>(null, null, null);
+        }
+        //通过hash散列出来的HashTable上的节点
+        Node<K, V> p = this.table[index];
+        //只有哨兵节点，则直接插入
+        if (p.next == null) {
+            p.next = new Node<>(key, value, null);
+            this.size++;
+            this.indexCount++;
+            //超过加载因子，则需要扩容
+            if (this.indexCount > this.loadFactor * this.tableCapacity) {
+                this.resize();
+            }
+            return value;
+        }
+        //遍历链表，发现key相同则替换value
+        do {
+            p = p.next;
+            if (p.key.equals(key)) {
+                p.value = value;
+                return value;
+            }
+        } while (p.next != null);
+        //尾插法
+        p.next = new Node<>(key, value, null);
+        this.size++;
         return value;
     }
 
     /**
-     * 初始化或扩容散列表
+     * 获取
+     * @param key   键
+     * @return  值
+     */
+    public V get(Object key) {
+        int index = hash(key) & (this.tableCapacity - 1);
+        Node<K, V> p = this.table[index];
+        if (p == null || p.next == null) {
+            return null;
+        }
+        while (p.next != null) {
+            p = p.next;
+            if (p.key.equals(key)) {
+                return p.value;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 返回此映射中键值映射的数量
+     * @return int  该映射中键值映射的数量
+     * @author Rickshaw
+     * @since 2023/6/30 15:25
+     */
+    public int size() {
+        return this.size;
+    }
+
+    /**
+     * 计算 key.hashCode() 并将散列的高位散布到低位，
+     * 使得 hash & (n-1)既同时具有高位和低位的特性，散列更随机均匀
+     * （^异或操作：只有 1个 1，才为 1）
+     * @param key   键
+     * @return int  散列值
+     * @author Rickshaw
+     * @since 2023/6/30 9:26
+     */
+    private static int hash(Object key) {
+        int h;
+        return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+    }
+
+    /**
+     * 扩容散列表
      * @author Rickshaw
      * @since 2023/6/29 16:01
      */
     private void resize() {
-        if (this.tableCapacity == 0) {
-            adjustSize(DEFAULT_INITIAL_CAPACITY);
-            return;
+        Node<K, V>[] oldTable = this.table;
+        this.tableCapacity *= 2;
+        this.table = this.getNodeArr(this.tableCapacity);
+        this.indexCount = 0;
+        for (Node<K, V> kvNode : oldTable) {
+            //将要插入新HashTable的元素
+            Node<K, V> p = kvNode;
+            //如果该元素为空，或者只有哨兵元素则下一个
+            if (p == null || p.next == null) {
+                continue;
+            }
+            while (p.next != null) {
+                p = p.next;
+                int index = hash(p.key) & (this.tableCapacity - 1);
+                //如果散列表对应的index没有元素，则新增哨兵元素
+                if (this.table[index] == null) {
+                    this.table[index] = new Node<>(null, null, null);
+                    this.indexCount++;
+                }
+                //头插入法插入
+                this.table[index].next = new Node<>(p.key, p.value, this.table[index].next);
+            }
+
         }
-        // TODO: 2023/6/29  
     }
 
     /**
@@ -132,8 +225,8 @@ public class MyHashTable<K, V> {
      * @since 2023/6/29 15:57
      */
     @SuppressWarnings("unchecked")
-    private void adjustSize(int capacity) {
-        this.table = (Node<K,V>[]) new Node[capacity];
+    private Node<K,V>[] getNodeArr(int capacity) {
+       return (Node<K,V>[]) new Node[capacity];
     }
 
     /**
@@ -158,8 +251,20 @@ public class MyHashTable<K, V> {
     }
 
     public static void main(String[] args) {
+        MyHashTable<Integer, String> hashTable = new MyHashTable<>(3);
+        hashTable.put(1, "one");
+        hashTable.put(10, "ten");
+        hashTable.put(3, "three");
+        hashTable.put(12, "twelve");
+        hashTable.put(2, "two");
+        hashTable.put(6, "six");
+        System.out.println("hashTable.get(9) = " + hashTable.get(9));
+        System.out.println("hashTable.get(3) = " + hashTable.get(3));
 
+        hashTable = new MyHashTable<>(4);
+        hashTable.put(4, "four");
+        Node<Integer, String> p = hashTable.table[0];
+        p.next = new Node<>(7, "seven", p.next);
+        System.out.println();
     }
-
-
 }
