@@ -217,6 +217,10 @@ public class MyHashTable<K, V> {
      */
     private static int hash(Object key) {
         int h;
+        //1、用自己的高半区和低半区做异或，混合原始哈希码的高位和低位，关键是以此来加大低位的随机性。
+        // 为后续计算index截取低位，保证低位的随机性
+        //2、这样设计保证了对象的hashCode的32位值只要有一位发生改变，整个hash()返回值就会改变，
+        // 高位的变化会反应到低位里，保证了hash值的随机性。
         return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
     }
 
