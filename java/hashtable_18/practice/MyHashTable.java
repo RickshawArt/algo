@@ -163,6 +163,40 @@ public class MyHashTable<K, V> {
     }
 
     /**
+     * 移除
+     * @param key   键
+     * @return V    值
+     * @author Rickshaw
+     * @since 2023/7/1 13:11
+     */
+    public V remove(Object key) {
+        int index = hash(key) & (this.tableCapacity - 1);
+        Node<K, V> p = this.table[index];
+        if (p == null || p.next == null) {
+            return null;
+        }
+
+        Node<K, V> pre;
+        Node<K, V> head = this.table[index];
+        do {
+            pre = p;
+            p = p.next;
+            if (p.key.equals(key)) {
+                V value = p.value;
+                //pre节点用于删除元素的作用
+                pre.next = p.next;
+                this.size--;
+                //如果哨兵节点没有后继节点，则索引要减1
+                if (head.next == null) {
+                    this.indexCount--;
+                }
+                return value;
+            }
+        } while (p.next != null);
+        return null;
+    }
+
+    /**
      * 返回此映射中键值映射的数量
      * @return int  该映射中键值映射的数量
      * @author Rickshaw
@@ -259,12 +293,9 @@ public class MyHashTable<K, V> {
         hashTable.put(2, "two");
         hashTable.put(6, "six");
         System.out.println("hashTable.get(9) = " + hashTable.get(9));
-        System.out.println("hashTable.get(3) = " + hashTable.get(3));
+        System.out.println("hashTable.get(10) = " + hashTable.get(10));
+        hashTable.remove(10);
+        System.out.println("hashTable.get(10) = " + hashTable.get(10));
 
-        hashTable = new MyHashTable<>(4);
-        hashTable.put(4, "four");
-        Node<Integer, String> p = hashTable.table[0];
-        p.next = new Node<>(7, "seven", p.next);
-        System.out.println();
     }
 }
