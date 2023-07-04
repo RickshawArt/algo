@@ -2,7 +2,7 @@ package Stack.java.hashtable_18.practice;
 
 
 /**
- * 散列表实现
+ * 散列表实现，模拟HashMap
  *
  * @author Rickshaw
  * @version 1.0
