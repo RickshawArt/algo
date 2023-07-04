@@ -148,6 +148,9 @@ public class MyHashTable<K, V> {
      * @return  值
      */
     public V get(Object key) {
+        if (this.table == null) {
+            return null;
+        }
         int index = hash(key) & (this.tableCapacity - 1);
         Node<K, V> p = this.table[index];
         if (p == null || p.next == null) {
