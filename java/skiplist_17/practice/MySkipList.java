@@ -39,7 +39,8 @@ public class MySkipList<E extends Comparable<E>> {
         private final E data;
 
         /**
-         * 当前节点的每一层的next节点数组
+         * 当前节点的每一层的next节点数组(0: 第一层, 1: 第二层......),
+         * nextNodes[2].nextNodes[2]: 为第三层索引的遍历平移
          */
         @SuppressWarnings("unchecked")
         private final Node[] nextNodes = (Node[]) Array.newInstance(Node.class, DEFAULT_MAX_LEVEL);
