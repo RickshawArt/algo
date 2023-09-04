@@ -1,5 +1,7 @@
 package Stack.java.tree_24.practice.traversal;
 
+import Stack.java.tree_24.practice.domain.TreeNode;
+
 /**
  * binaryTree链表遍历
  *
@@ -7,7 +9,7 @@ package Stack.java.tree_24.practice.traversal;
  * @version 1.0
  * @since 2023/8/31 17:49
  */
-public class LinkedListTraversal<E> implements BinaryTreeTraversal<LinkedListTraversal.TreeNode<E>> {
+public class LinkedListTraversal<E> implements BinaryTreeTraversal<TreeNode<E>> {
 
     /**
      * 根节点
@@ -26,9 +28,9 @@ public class LinkedListTraversal<E> implements BinaryTreeTraversal<LinkedListTra
         if (nodeOrIndex == null) {
             return;
         }
-        System.out.print(nodeOrIndex.data + " ");
-        this.preOrder(nodeOrIndex.left);
-        this.preOrder(nodeOrIndex.right);
+        System.out.print(nodeOrIndex.getData() + " ");
+        this.preOrder(nodeOrIndex.getLeft());
+        this.preOrder(nodeOrIndex.getRight());
     }
 
     @Override
@@ -36,9 +38,9 @@ public class LinkedListTraversal<E> implements BinaryTreeTraversal<LinkedListTra
         if (nodeOrIndex == null) {
             return;
         }
-        this.inOrder(nodeOrIndex.left);
-        System.out.print(nodeOrIndex.data + " ");
-        this.inOrder(nodeOrIndex.right);
+        this.inOrder(nodeOrIndex.getLeft());
+        System.out.print(nodeOrIndex.getData() + " ");
+        this.inOrder(nodeOrIndex.getRight());
     }
 
     @Override
@@ -46,21 +48,11 @@ public class LinkedListTraversal<E> implements BinaryTreeTraversal<LinkedListTra
         if (nodeOrIndex == null) {
             return;
         }
-        this.postOrder(nodeOrIndex.left);
-        this.postOrder(nodeOrIndex.right);
-        System.out.print(nodeOrIndex.data + " ");
+        this.postOrder(nodeOrIndex.getLeft());
+        this.postOrder(nodeOrIndex.getRight());
+        System.out.print(nodeOrIndex.getData() + " ");
     }
 
-    public static class TreeNode<E> {
-        private final E data;
-        private LinkedListTraversal.TreeNode<E> left;
-        private LinkedListTraversal.TreeNode<E> right;
-
-        private TreeNode(E data) {
-            this.data = data;
-        }
-
-    }
 
     public static void main(String[] args) {
         LinkedListTraversal<String> linkedListTraversal = new LinkedListTraversal<>();
@@ -72,13 +64,13 @@ public class LinkedListTraversal<E> implements BinaryTreeTraversal<LinkedListTra
         TreeNode<String> gNode = new TreeNode<>("G");
         TreeNode<String> mNode = new TreeNode<>("M");
         linkedListTraversal.root = new TreeNode<>("I");
-        linkedListTraversal.root.left = bNode;
-        linkedListTraversal.root.right = cNode;
-        bNode.left = dNode;
-        bNode.right = eNode;
-        cNode.left = fNode;
-        cNode.right = gNode;
-        fNode.left = mNode;
+        linkedListTraversal.root.setLeft(bNode);
+        linkedListTraversal.root.setRight(cNode);
+        bNode.setLeft(dNode);
+        bNode.setRight(eNode);
+        cNode.setLeft(fNode);
+        cNode.setRight(gNode);
+        fNode.setLeft(mNode);
 
         System.out.println("preOrder = ");
         linkedListTraversal.preOrder(linkedListTraversal.root);
