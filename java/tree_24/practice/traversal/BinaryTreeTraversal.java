@@ -33,4 +33,12 @@ public interface BinaryTreeTraversal<T> {
      */
     void postOrder(T nodeOrIndex);
 
+    /**
+     * 层序遍历(广度优先)
+     * @param nodeOrIndex   树节点或索引
+     * @author Rickshaw
+     * @since 2023/8/31 17:26
+     */
+    void levelOrderBfs(T nodeOrIndex);
+
 }

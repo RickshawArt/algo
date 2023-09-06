@@ -2,6 +2,11 @@ package Stack.java.tree_24.practice.traversal;
 
 import Stack.java.tree_24.practice.domain.TreeNode;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Queue;
+
 /**
  * binaryTree链表遍历
  *
@@ -53,6 +58,29 @@ public class LinkedListTraversal<E> implements BinaryTreeTraversal<TreeNode<E>> 
         System.out.print(nodeOrIndex.getData() + " ");
     }
 
+    @Override
+    public void levelOrderBfs(TreeNode<E> nodeOrIndex) {
+        //依赖队列FIFO的特点实现, 父节点入队, 出队, 再把子节点依次入队, 循环往复
+        Queue<TreeNode<E>> queue = new ArrayDeque<>();
+        //用于保存输出节点数据的顺序
+        ArrayList<E> outputList = new ArrayList<>();
+        //放入root节点
+        if (Objects.isNull(nodeOrIndex)) {
+            return;
+        }
+        queue.add(nodeOrIndex);
+        while (!queue.isEmpty()) {
+            TreeNode<E> remove = queue.remove();
+            outputList.add(remove.getData());
+            if (Objects.nonNull(remove.getLeft())) {
+                queue.add(remove.getLeft());
+            }
+            if (Objects.nonNull(remove.getRight())) {
+                queue.add(remove.getRight());
+            }
+        }
+        outputList.forEach(output -> System.out.print(output + " "));
+    }
 
     public static void main(String[] args) {
         LinkedListTraversal<String> linkedListTraversal = new LinkedListTraversal<>();
@@ -84,6 +112,11 @@ public class LinkedListTraversal<E> implements BinaryTreeTraversal<TreeNode<E>> 
 
         System.out.println("postOrder = ");
         linkedListTraversal.postOrder(linkedListTraversal.root);
+        System.out.println();
+        System.out.println();
+
+        System.out.println("levelOrderBfs = ");
+        linkedListTraversal.levelOrderBfs(linkedListTraversal.root);
         System.out.println();
         System.out.println();
     }

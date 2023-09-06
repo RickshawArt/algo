@@ -1,6 +1,7 @@
 package Stack.java.tree_24.practice.traversal;
 
 import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * binaryTree 数组遍历
@@ -94,6 +95,33 @@ public class ArrayListTraversal<E> implements BinaryTreeTraversal<Integer> {
         System.out.print(e + " ");
     }
 
+    @Override
+    public void levelOrderBfs(Integer nodeOrIndex) {
+        //队列存放数组索引, 依赖队列FIFO的特点实现, 父节点入队, 出队, 再把子节点依次入队, 循环往复
+        Queue<Integer> indexQueue = new ArrayDeque<>();
+        List<Integer> indexOutputList = new ArrayList<>();
+        if (this.container.length == 0) {
+            return;
+        }
+        //放入rootIndex
+        indexQueue.add(nodeOrIndex);
+        while (!indexQueue.isEmpty()) {
+            int currentIndex = indexQueue.remove();
+            indexOutputList.add(currentIndex);
+            //左节点
+            int leftIndex = currentIndex * 2;
+            if (!this.isOutOfBounds(leftIndex) && Objects.nonNull(this.elementData(leftIndex))) {
+                indexQueue.add(leftIndex);
+            }
+            //右节点
+            int rightIndex = currentIndex * 2 + 1;
+            if (!this.isOutOfBounds(rightIndex) && Objects.nonNull(this.elementData(rightIndex))) {
+                indexQueue.add(rightIndex);
+            }
+        }
+        indexOutputList.forEach(index -> System.out.print(this.elementData(index) + " "));
+    }
+
     public static void main(String[] args) {
 //        ArrayListTraversal<Character> arrayListTraversal = new ArrayListTraversal<>();
         ArrayListTraversal<Character> arrayListTraversal = new ArrayListTraversal<>(11);
@@ -119,6 +147,11 @@ public class ArrayListTraversal<E> implements BinaryTreeTraversal<Integer> {
 
         System.out.println("postOrder = ");
         arrayListTraversal.postOrder(rootIndex);
+        System.out.println();
+        System.out.println();
+
+        System.out.println("levelOrderBfs = ");
+        arrayListTraversal.levelOrderBfs(rootIndex);
         System.out.println();
         System.out.println();
     }
