@@ -2,10 +2,7 @@ package Stack.java.tree_24.practice.traversal;
 
 import Stack.java.tree_24.practice.domain.TreeNode;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * binaryTree链表遍历
@@ -82,6 +79,42 @@ public class LinkedListTraversal<E> implements BinaryTreeTraversal<TreeNode<E>> 
         outputList.forEach(output -> System.out.print(output + " "));
     }
 
+    @Override
+    public void levelOrderDfs(TreeNode<E> nodeOrIndex) {
+        if (Objects.isNull(nodeOrIndex)) {
+            return;
+        }
+        List<List<E>> res = new ArrayList<>();
+        dfs(nodeOrIndex, 0, res);
+        res.stream()
+                .flatMap(Collection::stream)
+                .forEach(data -> System.out.print(data + " "));
+    }
+
+    /**
+     * 递归把树节点数据放入
+     * @param treeNode  树节点
+     * @param depth     深度
+     * @param res   对应 binaryTree的二维结构
+     * @author Rickshaw
+     * @since 2023/9/13 17:08
+     */
+    private void dfs(TreeNode<E> treeNode, int depth, List<List<E>> res) {
+        //res的第二层的list相当于树的每一层 - 1, 此时深度为res的长度，开启新的ArrayList<Integer>用于记录这一层
+        if (res.size() == depth) {
+            ArrayList<E> depthList = new ArrayList<>();
+            res.add(depthList);
+        }
+        //在当前层追加保存数据
+        res.get(depth).add(treeNode.getData());
+        if (Objects.nonNull(treeNode.getLeft())) {
+            this.dfs(treeNode.getLeft(), depth + 1, res);
+        }
+        if (Objects.nonNull(treeNode.getRight())) {
+            this.dfs(treeNode.getRight(), depth + 1, res);
+        }
+    }
+
     public static void main(String[] args) {
         LinkedListTraversal<String> linkedListTraversal = new LinkedListTraversal<>();
         TreeNode<String> bNode = new TreeNode<>("B");
@@ -117,6 +150,11 @@ public class LinkedListTraversal<E> implements BinaryTreeTraversal<TreeNode<E>> 
 
         System.out.println("levelOrderBfs = ");
         linkedListTraversal.levelOrderBfs(linkedListTraversal.root);
+        System.out.println();
+        System.out.println();
+
+        System.out.println("levelOrderDfs = ");
+        linkedListTraversal.levelOrderDfs(linkedListTraversal.root);
         System.out.println();
         System.out.println();
     }

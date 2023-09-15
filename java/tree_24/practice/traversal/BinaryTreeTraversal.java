@@ -41,4 +41,12 @@ public interface BinaryTreeTraversal<T> {
      */
     void levelOrderBfs(T nodeOrIndex);
 
+    /**
+     * 层序遍历(深度优先)
+     * @param nodeOrIndex   树节点或索引
+     * @author Rickshaw
+     * @since 2023/8/31 17:26
+     */
+    void levelOrderDfs(T nodeOrIndex);
+
 }

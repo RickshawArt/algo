@@ -122,6 +122,42 @@ public class ArrayListTraversal<E> implements BinaryTreeTraversal<Integer> {
         indexOutputList.forEach(index -> System.out.print(this.elementData(index) + " "));
     }
 
+    @Override
+    public void levelOrderDfs(Integer nodeOrIndex) {
+        if (Objects.isNull(this.elementData(nodeOrIndex))) {
+            return;
+        }
+        List<List<E>> res = new ArrayList<>();
+        dfs(nodeOrIndex, 0, res);
+        res.stream()
+                .flatMap(Collection::stream)
+                .forEach(data -> System.out.print(data + " "));
+    }
+
+    /**
+     * 递归把树节点数据放入
+     * @param index 数组下标索引
+     * @param depth 深度
+     * @param res   对应 binaryTree的二维结构
+     * @author Rickshaw
+     * @since 2023/9/15 15:13
+     */
+    private void dfs(Integer index, int depth, List<List<E>> res) {
+        if (res.size() == depth) {
+            ArrayList<E> depthList = new ArrayList<>();
+            res.add(depthList);
+        }
+        res.get(depth).add(this.elementData(index));
+        int leftIndex = 2 * index;
+        if (leftIndex < this.container.length && Objects.nonNull(this.elementData(leftIndex))) {
+            this.dfs(leftIndex, depth + 1, res);
+        }
+        int rightIndex = 2 * index + 1;
+        if (rightIndex < this.container.length && Objects.nonNull(this.elementData(rightIndex))) {
+            this.dfs(rightIndex, depth + 1, res);
+        }
+    }
+
     public static void main(String[] args) {
 //        ArrayListTraversal<Character> arrayListTraversal = new ArrayListTraversal<>();
         ArrayListTraversal<Character> arrayListTraversal = new ArrayListTraversal<>(11);
@@ -152,6 +188,11 @@ public class ArrayListTraversal<E> implements BinaryTreeTraversal<Integer> {
 
         System.out.println("levelOrderBfs = ");
         arrayListTraversal.levelOrderBfs(rootIndex);
+        System.out.println();
+        System.out.println();
+
+        System.out.println("levelOrderDfs = ");
+        arrayListTraversal.levelOrderDfs(rootIndex);
         System.out.println();
         System.out.println();
     }
