@@ -1,5 +1,7 @@
 package Stack.java.tree_24.practice.domain;
 
+import java.util.StringJoiner;
+
 /**
  * binaryTree链式节点对象
  *
@@ -34,5 +36,14 @@ public class TreeNode<E> {
 
     public void setRight(TreeNode<E> right) {
         this.right = right;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", TreeNode.class.getSimpleName() + "[", "]")
+                .add("data=" + data)
+                .add("left=" + left)
+                .add("right=" + right)
+                .toString();
     }
 }
