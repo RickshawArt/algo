@@ -82,6 +82,66 @@ public class CustomBinarySearchTree<E extends Comparable<E>> {
         return ret;
     }
 
+    /**
+     * 删除
+     * @param e 要删除的元素
+     * @author Rickshaw
+     * @since 2023/9/20 14:46
+     */
+    public void delete(E e) {
+        if (Objects.isNull(e)) {
+            return;
+        }
+        //要删除的元素
+        TreeNode<E> p = this.root;
+        //要删除元素的父节点
+        TreeNode<E> parent = null;
+        //找到要删除的元素
+        while (Objects.nonNull(p) && e.compareTo(p.getData()) != 0) {
+            if (e.compareTo(p.getData()) > 0) {
+                p = p.getRight();
+            } else if (e.compareTo(p.getData()) < 0) {
+                p = p.getLeft();
+            }
+            parent = p;
+        }
+        //没有找到要删除的元素, 直接返回
+        if (Objects.isNull(p)) {
+            return;
+        }
+        //要删除的节点有两个子节点的情况
+        if (Objects.nonNull(p.getLeft()) && Objects.nonNull(p.getRight())) {
+            //找到这个节点的右子树中的最小节点
+            TreeNode<E> minP = p.getRight();
+            TreeNode<E> minParent = p;
+            while (minP.getLeft() != null) {
+                minParent = minP;
+                minP = minP.getLeft();
+            }
+            //把要删除的元素替换成p右子树中的最小节点
+            p.setData(minP.getData());
+            //问题转换成删除p右子树中的最小节点, 因为p右子树中的最小节点的data已经替换p节点的data了
+            p = minP;
+            parent = minParent;
+        }
+
+        //用于未来替换删除节点p的
+        TreeNode<E> child = null;
+        //根据p只有一个子节点的情况, 填充child
+        if (Objects.nonNull(p.getLeft())) {
+            child = p.getLeft();
+        } else if (Objects.nonNull(p.getRight())) {
+            child = p.getRight();
+        }
+
+        //真正删除的操作
+        if (parent.getLeft().equals(p)) {
+            parent.setLeft(child);
+        } else if (parent.getRight().equals(p)) {
+            parent.setRight(child);
+        }
+    }
+
     public static void main(String[] args) {
         CustomBinarySearchTree<Integer> binarySearchTree = new CustomBinarySearchTree<>();
         binarySearchTree.insert(10);

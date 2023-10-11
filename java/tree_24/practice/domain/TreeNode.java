@@ -1,5 +1,6 @@
 package Stack.java.tree_24.practice.domain;
 
+import java.util.Objects;
 import java.util.StringJoiner;
 
 /**
@@ -10,7 +11,7 @@ import java.util.StringJoiner;
  * @since 2023/9/4 10:51
  */
 public class TreeNode<E> {
-    private final E data;
+    private E data;
     private TreeNode<E> left;
     private TreeNode<E> right;
 
@@ -20,6 +21,10 @@ public class TreeNode<E> {
 
     public E getData() {
         return data;
+    }
+
+    public void setData(E data) {
+        this.data = data;
     }
 
     public TreeNode<E> getLeft() {
@@ -45,5 +50,22 @@ public class TreeNode<E> {
                 .add("left=" + left)
                 .add("right=" + right)
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        TreeNode<?> treeNode = (TreeNode<?>) o;
+        return Objects.equals(data, treeNode.data) && Objects.equals(left, treeNode.left) && Objects.equals(right, treeNode.right);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(data, left, right);
     }
 }
