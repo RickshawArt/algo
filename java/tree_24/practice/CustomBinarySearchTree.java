@@ -1,6 +1,8 @@
 package Stack.java.tree_24.practice;
 
 import Stack.java.tree_24.practice.domain.TreeNode;
+import Stack.java.tree_24.practice.traversal.BinaryTreeTraversal;
+import Stack.java.tree_24.practice.traversal.LinkedListTraversal;
 
 import java.util.Objects;
 
@@ -13,10 +15,16 @@ import java.util.Objects;
  */
 public class CustomBinarySearchTree<E extends Comparable<E>> {
 
+
     /**
      * 树的根节点
      */
     private TreeNode<E> root;
+
+    /**
+     * 用于遍历 binarySearchTree
+     */
+    private final BinaryTreeTraversal<TreeNode<E>> traversal = new LinkedListTraversal<>();
 
     /**
      * 插入
@@ -98,12 +106,12 @@ public class CustomBinarySearchTree<E extends Comparable<E>> {
         TreeNode<E> parent = null;
         //找到要删除的元素
         while (Objects.nonNull(p) && e.compareTo(p.getData()) != 0) {
+            parent = p;
             if (e.compareTo(p.getData()) > 0) {
                 p = p.getRight();
             } else if (e.compareTo(p.getData()) < 0) {
                 p = p.getLeft();
             }
-            parent = p;
         }
         //没有找到要删除的元素, 直接返回
         if (Objects.isNull(p)) {
@@ -135,11 +143,83 @@ public class CustomBinarySearchTree<E extends Comparable<E>> {
         }
 
         //真正删除的操作
-        if (parent.getLeft().equals(p)) {
+        if (Objects.isNull(parent)) {
+            //删除根节点的情况
+            this.root = child;
+        } else if (p.equals(parent.getLeft())) {
             parent.setLeft(child);
-        } else if (parent.getRight().equals(p)) {
+        } else if (p.equals(parent.getRight())) {
             parent.setRight(child);
         }
+    }
+
+    /**
+     * 查找最小值
+     * @return Stack.java.tree_24.practice.domain.TreeNode<E>
+     * @author Rickshaw
+     * @since 2023/10/12 8:39
+     */
+    public TreeNode<E> findMin() {
+        if (Objects.isNull(this.root)) {
+            return null;
+        }
+        TreeNode<E> p = this.root;
+        while (Objects.nonNull(p.getLeft())) {
+            p = p.getLeft();
+        }
+        return p;
+    }
+
+    /**
+     * 查找最大值
+     * @return Stack.java.tree_24.practice.domain.TreeNode<E>
+     * @author Rickshaw
+     * @since 2023/10/12 8:39
+     */
+    public TreeNode<E> findMax() {
+        if (Objects.isNull(this.root)) {
+            return null;
+        }
+        TreeNode<E> p = this.root;
+        while (Objects.nonNull(p.getRight())) {
+            p = p.getRight();
+        }
+        return p;
+    }
+
+    /**
+     * 顺序输出 binarySearchTree 的元素
+     * @author Rickshaw
+     * @since 2023/10/12 16:18
+     */
+    public void printAsc() {
+        traversal.inOrder(this.root);
+    }
+
+    /**
+     * 获取 binarySearchTree的高度, 树的根节点为 0
+     * @return int
+     * @author Rickshaw
+     * @since 2023/10/12 17:27
+     */
+    public int getHeight() {
+        return this.getHeightRecursive(this.root) - 1;
+    }
+
+    /**
+     * 递归获取左右子树中最大的高度
+     * @param treeNode  树节点
+     * @return int
+     * @author Rickshaw
+     * @since 2023/10/12 17:28
+     */
+    private int getHeightRecursive(TreeNode<E> treeNode) {
+        if (Objects.isNull(treeNode)) {
+            return 0;
+        }
+        int leftHeight = this.getHeightRecursive(treeNode.getLeft());
+        int rightHeight = this.getHeightRecursive(treeNode.getRight());
+        return Math.max(leftHeight, rightHeight) + 1;
     }
 
     public static void main(String[] args) {
@@ -149,8 +229,16 @@ public class CustomBinarySearchTree<E extends Comparable<E>> {
         binarySearchTree.insert(20);
         binarySearchTree.insert(1);
         binarySearchTree.insert(3);
-        TreeNode<Integer> find = binarySearchTree.find(0);
+        binarySearchTree.printAsc();
+        System.out.println("binarySearchTree.getHeight() = " + binarySearchTree.getHeight());
+        System.out.println();
+        TreeNode<Integer> find = binarySearchTree.find(3);
         System.out.println("find = " + find);
+        binarySearchTree.delete(10);
+        binarySearchTree.delete(20);
+        binarySearchTree.delete(1);
+        System.out.println("binarySearchTree.findMin() = " + binarySearchTree.findMin().getData());
+        System.out.println("binarySearchTree.findMax() = " + binarySearchTree.findMax().getData());
     }
 
 }
