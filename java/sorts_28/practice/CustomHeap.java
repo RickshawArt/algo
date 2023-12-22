@@ -107,6 +107,19 @@ public class CustomHeap<E extends Comparable<E>> implements Comparator<E> {
     }
 
     /**
+     * 窥视堆顶的元素
+     * @return E
+     * @author Rickshaw
+     * @since 2023/10/25 11:50
+     */
+    public E peek() {
+        if (this.size == 0) {
+            return null;
+        }
+        return this.elementData(1);
+    }
+
+    /**
      * 堆排序
      * @param e  要转换成的泛型数组
      * @return E[]
@@ -208,7 +221,7 @@ public class CustomHeap<E extends Comparable<E>> implements Comparator<E> {
      * @author Rickshaw
      * @since 2023/12/19 14:48
      */
-    private void printAll() {
+    public void printAll() {
         System.out.print("customHeap: ");
         for (int i = 1; i <= this.size; i++) {
             System.out.print(this.elementData(i) + " ");
