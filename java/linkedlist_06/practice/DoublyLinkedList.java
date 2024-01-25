@@ -145,10 +145,8 @@ public class DoublyLinkedList<E> {
      */
     public boolean removeElement(E element) {
         Node<E> p = this.head;
-        int i = 0;
         while (p.next != null && p.item != element) {
             p = p.next;
-            i++;
         }
         if (!p.item.equals(element)) {
             return false;
@@ -182,7 +180,7 @@ public class DoublyLinkedList<E> {
 
     /**
      * 获取尾节点
-     * @return Stack.java.linkedlist_06.practice.CustomCircleLinkedList.Node<E>
+     * @return Stack.java.linkedlist_06.practice.DoublyLinkedList.Node<E>
      * @author Rickshaw
      * @since 2024/1/12 10:13
      */
@@ -197,7 +195,7 @@ public class DoublyLinkedList<E> {
     /**
      * 获取索引的那个元素
      * @param index     索引
-     * @return Stack.java.linkedlist_06.practice.CustomCircleLinkedList.Node<E>
+     * @return Stack.java.linkedlist_06.practice.DoublyLinkedList.Node<E>
      * @author Rickshaw
      * @since 2024/1/12 10:22
      */
@@ -211,13 +209,13 @@ public class DoublyLinkedList<E> {
 
     /**
      * 创建一个 Node节点
-     * @param e    元素
-     * @return Stack.java.linkedlist_06.practice.CustomCircleLinkedList.Node<E>
+     * @param element    元素
+     * @return Stack.java.linkedlist_06.practice.DoublyLinkedList.Node<E>
      * @author Rickshaw
      * @since 2024/1/11 11:00
      */
-    private Node<E> createNode(E e) {
-        return new Node<>(e, null, null);
+    private Node<E> createNode(E element) {
+        return new Node<>(element, null, null);
     }
 
     public static void main(String[] args) {

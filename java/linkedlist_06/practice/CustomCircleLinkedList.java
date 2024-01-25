@@ -181,13 +181,13 @@ public class CustomCircleLinkedList<E> {
 
     /**
      * 创建一个 Node节点
-     * @param e    元素
+     * @param element    元素
      * @return Stack.java.linkedlist_06.practice.CustomCircleLinkedList.Node<E>
      * @author Rickshaw
      * @since 2024/1/11 11:00
      */
-    private Node<E> createNode(E e) {
-        return new Node<>(e, null);
+    private Node<E> createNode(E element) {
+        return new Node<>(element, null);
     }
 
     public static void main(String[] args) {
