@@ -1,5 +1,7 @@
 package Stack.java.linkedlist_07.practice;
 
+import java.util.Objects;
+
 /**
  * 1、单链表反转
  * 2、链表中环的检测
@@ -41,18 +43,18 @@ public class MyLinkedListAlgo<E> {
      * @since 2023/4/21 17:03
      */
     public Node<E> reverse(Node<E> head) {
-        //声明一个哨兵节点
-        Node<E> sentinel = this.createNode(null);
-        Node<E> iterator = head;
-        Node<E> cur = null;
-        while (iterator != null) {
-            //遍历原先链表，再从sentinel头插法
-            cur = iterator;
-            iterator = iterator.next;
-            cur.next = sentinel.next;
-            sentinel.next = cur;
+        Node<E> sentinel = null;
+        //迭代节点
+        Node<E> p = head;
+        //用于把当前节点通过头茶法插入sentinel
+        Node<E> cur;
+        while (p != null) {
+            cur = p;
+            p = p.next;
+            cur.next = sentinel;
+            sentinel = cur;
         }
-        return sentinel.next;
+        return sentinel;
     }
 
     /**
@@ -87,22 +89,21 @@ public class MyLinkedListAlgo<E> {
      * @since 2023/4/23 9:10
      */
     public Node<Integer> mergeLinkedList(Node<Integer> o1, Node<Integer> o2) {
-        //声明一个哨兵节点
-        Node<Integer> sentinel = new Node<>(0, null);
-        Node<Integer> tail = sentinel;
+        Node<Integer> sentinel = new Node<>(Integer.MIN_VALUE, null);
+        Node<Integer> p = sentinel;
         while (o1 != null && o2 != null) {
-            //把较小的节点，使用尾插法接上
-            if (o1.item < o2.item) {
-                tail.next = o1;
-                o1 = o1.next;
-            } else {
-                tail.next = o2;
+            if (o1.item.compareTo(o2.item) > 0) {
+                p.next = o2;
                 o2 = o2.next;
+            } else {
+                p.next = o1;
+                o1 = o1.next;
             }
-            tail = tail.next;
+            //用于存储下一个需要合并的节点
+            p = p.next;
         }
-        //把剩余的链表接上
-        tail.next = o1 == null ? o2 : o1;
+        //把剩余的链表放在新链表的结尾
+        p.next = Objects.isNull(o1) ? o2 : o1;
         return sentinel.next;
     }
 
@@ -158,19 +159,15 @@ public class MyLinkedListAlgo<E> {
      * @since 2023/4/23 15:03
      */
     public Node<E> findMiddleNode(Node<E> head) {
-        if (head == null) {
-            throw new IllegalArgumentException("The LinkedList is null");
+        //快指针
+        Node<E> p = head;
+        //慢指针
+        Node<E> q = head;
+        while (p.next != null && p.next.next != null) {
+            q = q.next;
+            p = p.next.next;
         }
-        /*if (head.next == null) {
-            return head;
-        }*/
-        Node<E> fast = head;
-        Node<E> slow = head;
-        while (fast.next != null && fast.next.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-        return slow;
+        return q;
     }
 
     /**
@@ -241,8 +238,8 @@ public class MyLinkedListAlgo<E> {
 
         //测试求链表的中间结点
         MyLinkedListAlgo<Integer> algo = new MyLinkedListAlgo<>();
-        Node<Integer> node7 = algo.createNode(7);
-        Node<Integer> node6 = new Node<>(6, node7);
+//        Node<Integer> node7 = algo.createNode(7);
+        Node<Integer> node6 = new Node<>(6, null);
         Node<Integer> node5 = new Node<>(5, node6);
         Node<Integer> node4 = new Node<>(4, node5);
         Node<Integer> node3 = new Node<>(3, node4);
