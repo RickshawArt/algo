@@ -1,6 +1,9 @@
 package Stack.java.linkedlist_07.practice;
 
+import java.lang.reflect.Array;
+import java.util.Comparator;
 import java.util.Objects;
+import java.util.PriorityQueue;
 
 /**
  * 1、单链表反转
@@ -68,16 +71,46 @@ public class MyLinkedListAlgo<E> {
         if (head == null) {
             return false;
         }
-        Node<E> fast = head.next;
-        Node<E> slow = head;
-        while (fast != null && fast.next != null) {
-            if (fast == slow) {
+        //p -> 快指针，q -> 慢指针
+        Node<E> p = head, q = head;
+        while (p.next != null && p.next.next != null) {
+            p = p.next.next;
+            q = q.next;
+            if (p == q) {
                 return true;
             }
-            fast = fast.next.next;
-            slow = slow.next;
         }
         return false;
+    }
+
+    /**
+     * 合并 K 个升序链表
+     * 思路：使用最小堆存放 k 个
+     * @param lists    k个有序链表
+     * @return Stack.java.linkedlist_07.practice.MyLinkedListAlgo.Node<java.lang.Integer>
+     * @author Rickshaw
+     * @since 2024/3/12 15:18
+     */
+    public Node<Integer> mergeKthLists(Node<Integer>[] lists) {
+        //合并后新链表的头节点
+        PriorityQueue<Node<Integer>> priorityQueue = new PriorityQueue<>(lists.length, Comparator.comparing(node -> node.item));
+        //装入 K 个升序链表的头节点
+        for (Node<Integer> node : lists) {
+            if (node != null) {
+                priorityQueue.offer(node);
+            }
+        }
+        Node<Integer> head = new Node<>(Integer.MIN_VALUE, null);
+        Node<Integer> p = head;
+        while (!priorityQueue.isEmpty()) {
+            Node<Integer> nextNode = priorityQueue.poll();
+            p.next = nextNode;
+            p = p.next;
+            if (nextNode.next != null) {
+                priorityQueue.offer(nextNode.next);
+            }
+        }
+        return head.next;
     }
 
     /**
@@ -237,8 +270,8 @@ public class MyLinkedListAlgo<E> {
         algo.printAll(head);*/
 
         //测试求链表的中间结点
-        MyLinkedListAlgo<Integer> algo = new MyLinkedListAlgo<>();
-//        Node<Integer> node7 = algo.createNode(7);
+        /*MyLinkedListAlgo<Integer> algo = new MyLinkedListAlgo<>();
+        Node<Integer> node7 = algo.createNode(7);
         Node<Integer> node6 = new Node<>(6, null);
         Node<Integer> node5 = new Node<>(5, node6);
         Node<Integer> node4 = new Node<>(4, node5);
@@ -247,7 +280,24 @@ public class MyLinkedListAlgo<E> {
         Node<Integer> node1 = new Node<>(1, node2);
         algo.printAll(node1);
         Node<Integer> head = algo.findMiddleNode(node1);
-        System.out.println("head.item = " + head.item);
+        System.out.println("head.item = " + head.item);*/
+
+        //测试合并 K 个升序链表
+        MyLinkedListAlgo<Integer> algo = new MyLinkedListAlgo<>();
+        //noinspection unchecked
+        Node<Integer>[] lists = (Node<Integer>[]) Array.newInstance(Node.class, 3);
+        Node<Integer> node1 = algo.createNode(5);
+        node1 = new Node<>(4, node1);
+        node1 = new Node<>(1, node1);
+        lists[0] = node1;
+        Node<Integer> node2 = algo.createNode(4);
+        node2 = new Node<>(3, node2);
+        node2 = new Node<>(1, node2);
+        lists[1] = node2;
+        Node<Integer> node3 = algo.createNode(6);
+        node3 = new Node<>(2, node3);
+        lists[2] = node3;
+        algo.printAll(algo.mergeKthLists(lists));
     }
 
 }
