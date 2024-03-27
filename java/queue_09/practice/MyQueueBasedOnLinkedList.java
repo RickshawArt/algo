@@ -108,6 +108,8 @@ public class MyQueueBasedOnLinkedList<E> {
         queue.dequeue();
         queue.dequeue();
         queue.enqueue(7);
+        queue.enqueue(8);
+        queue.enqueue(9);
         queue.printAll();
     }
 
