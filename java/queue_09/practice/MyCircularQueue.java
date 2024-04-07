@@ -25,23 +25,25 @@ public class MyCircularQueue<E> {
     private final int capacity;
 
     /**
-     * 队头
+     * 队头元素对应的数组的索引
      */
     private int head = 0;
 
     /**
-     * 队尾
+     * 队尾元素对应的索引的下一个索引
      */
     private int tail = 0;
 
     public MyCircularQueue() {
-        this.elementData = new Object[DEFAULT_CAPACITY];
-        this.capacity = DEFAULT_CAPACITY;
+        // 由于尾指针占一个空位置，所以得加一
+        this.elementData = new Object[DEFAULT_CAPACITY + 1];
+        this.capacity = DEFAULT_CAPACITY + 1;
     }
 
     public MyCircularQueue(int capacity) {
-        this.elementData = new Object[capacity];
-        this.capacity = capacity;
+        // 由于尾指针占一个空位置，所以得加一
+        this.elementData = new Object[capacity + 1];
+        this.capacity = capacity + 1;
     }
 
     @SuppressWarnings("unchecked")
@@ -104,11 +106,11 @@ public class MyCircularQueue<E> {
         queue.enqueue(5);
         queue.enqueue(6);
         queue.enqueue(7);
-        queue.dequeue();
-        queue.dequeue();
-        queue.dequeue();
-        queue.dequeue();
         queue.enqueue(8);
+        queue.dequeue();
+        queue.dequeue();
+        queue.dequeue();
+        queue.dequeue();
         queue.enqueue(9);
         queue.enqueue(10);
         queue.enqueue(11);
