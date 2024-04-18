@@ -17,7 +17,9 @@ public class MyShellSort implements SortAlgo {
             return;
         }
         //初始步长为数组长度的一半，而且每次为原来的一半；直到step == 1，直接对整一个数组进行插入排序
+        //步长越短，分组越少
         for (int step = length / 2; step > 0; step /= 2) {
+            //按照步长来分组，分别对各组进行插入排序，假如数组长度为10，步长为5，有5组，每组2个元素
             //从第step元素，对其所在组的元素进行插入排序
             for (int i = step; i < length; i++) {
                 int j = i;
@@ -41,8 +43,8 @@ public class MyShellSort implements SortAlgo {
 
     public static void main(String[] args) {
         long[] arr = {1, 5, 4, 7, 2, 6};
-        SortAlgo bubbleSort = new MyShellSort();
-        bubbleSort.sort(arr);
-        bubbleSort.printArr(arr);
+        SortAlgo shellSort = new MyShellSort();
+        shellSort.sort(arr);
+        shellSort.printArr(arr);
     }
 }

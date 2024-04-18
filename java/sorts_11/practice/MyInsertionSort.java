@@ -92,23 +92,25 @@ public class MyInsertionSort implements SortAlgo {
      * @author Rickshaw
      * @since 2023/5/30 14:12
      */
-    private void sortWithoutSentinel(int[] arr, int length) {
+    private void sortWithoutSentinel(long[] arr, int length) {
         if (length <= 1) {
             return;
         }
-        //i: 未排序序号，首次arr[0]作为已排序区
+        // i 为无序区的index，首次arr[0]作为已排序区
         for (int i = 1; i < length; i++) {
-            //未排序区中要排序的值
-            int value = arr[i];
-            //j: 已排序序号
+            // 需要排序的元素
+            long value = arr[i];
+            // j 为有序区的index，start at the end of ordered area，因为插入位置前面的元素位置不需要动
+            // 没有start at the front of ordered area的原因是，省去找到位置之后的，插入引起的数据迁移
             int j = i - 1;
             for (; j >= 0; j--) {
-                if (arr[j] <= value) {
+                if (value >= arr[j]) {
                     break;
                 }
+                // 有序区边比较，边迁移数据
                 arr[j + 1] = arr[j];
             }
-            //因为判断j >= 0的时候j--了，所以要补1
+            // 由于循环多减了1，此处要加1才是元素所在的位置
             arr[j + 1] = value;
         }
     }
@@ -120,8 +122,8 @@ public class MyInsertionSort implements SortAlgo {
 
     public static void main(String[] args) {
         long[] arr = {7, 5, 4, 1, 2, 6};
-        SortAlgo bubbleSort = new MyInsertionSort();
-        bubbleSort.sort(arr);
-        bubbleSort.printArr(arr);
+        SortAlgo insertionSort = new MyInsertionSort();
+        insertionSort.sort(arr);
+        insertionSort.printArr(arr);
     }
 }

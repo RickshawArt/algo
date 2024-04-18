@@ -20,20 +20,21 @@ public class MyBubbleSort implements SortAlgo {
         if (length <= 1) {
             return;
         }
-        //用于交换变量
-        long exchange = 0;
+        // 用于交换两个变量
+        long temp;
         for (int i = 0; i < length - 1; i++) {
-            //如果下一次没有进行比较交换逻辑，则证明已排序好
-            boolean isSorted = true;
-            for (int j = 0; j < length - i - 1; j++) {
+            // 假设本次冒泡没有出现元素交换
+            boolean exchange = false;
+            for (int j = 0; j < length - 1 - i; j++) {
                 if (arr[j] > arr[j + 1]) {
-                    exchange = arr[j];
+                    exchange = true;
+                    temp = arr[j];
                     arr[j] = arr[j + 1];
-                    arr[j + 1] = exchange;
-                    isSorted = false;
+                    arr[j + 1] = temp;
                 }
             }
-            if (isSorted) {
+            // 如果某次冒泡没有元素交换，则证明排序提前完成，返回
+            if (!exchange) {
                 return;
             }
         }

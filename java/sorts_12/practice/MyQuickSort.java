@@ -21,7 +21,7 @@ public class MyQuickSort implements SortAlgo {
         if (length <= 1) {
             return;
         }
-        quickSortRecursion(arr, 0, length - 1);
+        this.quickSortRecursion(arr, 0, length - 1);
     }
 
     /**
@@ -36,9 +36,9 @@ public class MyQuickSort implements SortAlgo {
         if (left >= right) {
             return;
         }
-        int mid = partition(arr, left, right);
-        quickSortRecursion(arr, left, mid - 1);
-        quickSortRecursion(arr, mid + 1, right);
+        int partitionIndex = this.partition(arr, left, right);
+        this.quickSortRecursion(arr, left, partitionIndex - 1);
+        this.quickSortRecursion(arr, partitionIndex + 1, right);
     }
 
     /**
@@ -51,18 +51,17 @@ public class MyQuickSort implements SortAlgo {
      * @since 2023/5/12 10:52
      */
     private int partition(long[] arr, int left, int right) {
-        //取区间的最右的边界点作为支点
+        //选取数组尾部元素作为分区元素
         long pivot = arr[right];
-        //以i为分界点，左边 <= pivot，右边 > pivot；j用于遍历数组，跟pivot进行比较
-        int i = left, j = left;
-        for (; j < right; j++) {
+        // 以i为分界点，左边 <= pivot，右边 > pivot；j用于遍历数组，跟pivot进行比较
+        int i = left;
+        for (int j = left; j < right; j++) {
             if (arr[j] <= pivot) {
-                swap(arr, i, j);
-                i++;
+                swap(arr, i++, j);
             }
         }
-        //最后交换arr[i]，pivot的位置
-        swap(arr, i, j);
+        // 最后把pivot放在对应合适的位置
+        swap(arr, i, right);
         return i;
     }
 
@@ -83,6 +82,9 @@ public class MyQuickSort implements SortAlgo {
     public static void main(String[] args) {
         SortAlgo myQuickSort = new MyQuickSort();
         long[] arr = {8, 10, 2, 3, 6, 1, 5};
+//        arr = new long[]{8, 1, 3, 9, 4, 5};
+//        MyQuickSort myQuickSort1 = new MyQuickSort();
+//        int partition = myQuickSort1.partition(arr, 1, 4);
         myQuickSort.sort(arr);
         myQuickSort.printArr(arr);
     }

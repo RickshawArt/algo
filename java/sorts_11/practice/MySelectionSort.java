@@ -15,24 +15,25 @@ public class MySelectionSort implements SortAlgo {
         if (length <= 1) {
             return;
         }
-        //未排序区遍历找到的最小值
+        //未排序区遍历找到的最小值的索引
         int minIndex;
         //用于交换数据的变量
         long exchange;
-        //i: 已排序区序号
+        //i 为将要成为有序区的索引
         for (int i = 0; i < length - 1; i++) {
             minIndex = i;
-            //j: 待排序区序号
+            //用于交换数据
+            //j 为无序区的索引，在无序区寻找最小值的索引
             for (int j = i + 1; j < length; j++) {
-                if (arr[j] < arr[minIndex]) {
+                if (arr[minIndex] > arr[j]) {
                     minIndex = j;
                 }
             }
-            //如果当前位置就是最小值，无需进行交换
+            //把无序区的最小值放入有序区的尾部
             if (minIndex != i) {
-                exchange = arr[i];
-                arr[i] = arr[minIndex];
-                arr[minIndex] = exchange;
+                exchange = arr[minIndex];
+                arr[minIndex] = arr[i];
+                arr[i] = exchange;
             }
         }
     }
