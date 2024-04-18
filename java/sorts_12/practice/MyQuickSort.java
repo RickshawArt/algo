@@ -54,6 +54,7 @@ public class MyQuickSort implements SortAlgo {
         //选取数组尾部元素作为分区元素
         long pivot = arr[right];
         // 以i为分界点，左边 <= pivot，右边 > pivot；j用于遍历数组，跟pivot进行比较
+        // i为已处理区间的为尾部索引，j为未处理区间的头部索引
         int i = left;
         for (int j = left; j < right; j++) {
             if (arr[j] <= pivot) {
