@@ -94,6 +94,7 @@ public class OutsideSort {
 //        arr = "GqwUIaYlKp".toCharArray();
 //        casePartition(arr);
         caseNumPartition(arr);
+        System.out.println();
         for (char c : arr) {
             System.out.print(c);
         }
